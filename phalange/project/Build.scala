@@ -1,5 +1,6 @@
 import sbt._
 import Keys._
+import com.typesafe.sbteclipse.plugin.EclipsePlugin.EclipseKeys
 
 object ProjectBuild extends Build {
   lazy val project = "phalange"
@@ -12,7 +13,7 @@ object ProjectBuild extends Build {
     organization := "",
     version := "0.1-SNAPSHOT",
     scalaVersion := "2.10.1",
-
+    EclipseKeys.withSource := true,
     resolvers ++= Seq(
       "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/",
       "Typesafe Snapshots Repository" at "http://repo.typesafe.com/typesafe/snapshots/",
