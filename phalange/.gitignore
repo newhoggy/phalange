@@ -1,6 +1,7 @@
 .classpath
 .project
 .settings
+.cache
 target/
 .DS_Store
 .ensime
