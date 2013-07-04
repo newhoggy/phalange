@@ -1,4 +1,4 @@
-package myscalaz.a.fingertree
+package b.fingertree
 
 trait Digit[+A]
 case class D1[A](a: A                   ) extends Digit[A]

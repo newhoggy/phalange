@@ -1,4 +1,4 @@
-package myscalaz.b.fingertree
+package c.fingertree
 
 trait Digit[+A] {
   def +:[B >: A](x: B): Digit[B] = this match {

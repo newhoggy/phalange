@@ -1,6 +1,4 @@
-package myscalaz.b
-
-import scalaz.Foldable
+package c
 
 package object fingertree {
   def !!!(): Nothing = throw new UnsupportedOperationException 
