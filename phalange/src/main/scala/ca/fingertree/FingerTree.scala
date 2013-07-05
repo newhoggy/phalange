@@ -1,4 +1,4 @@
-package b.fingertree
+package ca.fingertree
 
 trait Digit[+A]
 case class D1[A](a: A                   ) extends Digit[A]

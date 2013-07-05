@@ -1,5 +1,5 @@
-package aa
+package ab
 
-package object tree {
+package object list {
   def !!!(): Nothing = throw new UnsupportedOperationException 
 }
