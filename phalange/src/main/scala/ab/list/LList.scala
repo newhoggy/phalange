@@ -11,6 +11,8 @@ trait LList[+A] {
     case Cons(head, tail) => tail.foldLeft(f(z, head))(f)
     case Nil => z
   }
+  final def reverse: LList[A] = foldLeft[LList[A]](Nil)((xs, x) => x +: xs)
+  final def foldRight[B](z: B)(f: (A, B) => B): B = reverse.foldLeft(z)((xs, x) => f(x, xs))
 }
 
 case object Nil extends LList[Nothing] {
@@ -24,6 +26,6 @@ object LListData {
   def main(args: Array[String]): Unit = {
     val empty: LList[Int] = Nil
     val single: LList[Int] = 1 +: Nil
-    List().foldLeft(???)(???)
+    List().foldRight(???)(???)
   }
 }
