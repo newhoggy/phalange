@@ -1,4 +1,4 @@
-package a.tree
+package aa.tree
 
 trait Monoid[F] extends Semigroup[F] { self =>
   def zero: F

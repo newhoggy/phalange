@@ -1,4 +1,4 @@
-package a
+package aa
 
 package object tree {
   def !!!(): Nothing = throw new UnsupportedOperationException 

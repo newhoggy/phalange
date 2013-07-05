@@ -1,4 +1,4 @@
-package a.tree
+package aa.tree
 
 trait LList[+A] {
   def head: A

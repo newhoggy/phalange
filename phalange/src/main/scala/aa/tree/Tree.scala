@@ -1,4 +1,4 @@
-package a.tree
+package aa.tree
 
 trait Tree[+A]
 case object Z extends Tree[Nothing]
