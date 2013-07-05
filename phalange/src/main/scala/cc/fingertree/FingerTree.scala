@@ -34,6 +34,12 @@ trait FingerTree[+A] {
     case Deep(l, m, D4(a, b, c, d)) => Deep(l     , m :+ N3(a, b, c), D2(d, x))
     case Deep(l, m, r             ) => Deep(l     , m               , r :+ x  )
   }
+//  
+//  final def foldLeft[B](xs: B)(f: (B, A) => B): B = this match {
+//    case Empty => xs
+//    case Single(v) => f(xs, v)
+//    case Deep(l, m, r) => 
+//  }
 }
 
 case object Empty extends FingerTree[Nothing]
