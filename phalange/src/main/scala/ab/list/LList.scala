@@ -22,10 +22,13 @@ case object Nil extends LList[Nothing] {
 
 case class Cons[A](head: A, tail: LList[A]) extends LList[A]
 
-object LListData {
+object Example {
+  import scalaz.Scalaz._
+
   def main(args: Array[String]): Unit = {
-    val empty: LList[Int] = Nil
-    val single: LList[Int] = 1 +: Nil
-    List().foldRight(???)(???)
+    val left: LList[Int] = 1 +: 2 +: 3 +: Nil
+    val right: LList[Int] = 4 +: 5 +: 6 +: Nil
+    val both = left |+| right
+    println(both)
   }
 }

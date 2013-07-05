@@ -13,7 +13,7 @@ case object Nil extends LList[Nothing] {
 
 case class Cons[A](head: A, tail: LList[A]) extends LList[A]
 
-object LListData {
+object Example {
   def main(args: Array[String]): Unit = {
     val empty: LList[Int] = Nil
     val single: LList[Int] = 1 +: Nil
