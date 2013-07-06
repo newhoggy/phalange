@@ -12,5 +12,8 @@ object Main {
                 D2(N3('n', 'o', 't'), N2('a', 't'))),
             D3('r', 'e', 'e'))
     }
+    val z: FingerTree[Char] = 't' +: 'h' +: 'i' +: 's' +: 'i' +: 's' +: 'n' +: 'o' +: 't' +: 'a' +: 't' +: 'r' +: 'e' +: 'e' +: Empty
+    println(y)
+    println(z)
   }
 }
