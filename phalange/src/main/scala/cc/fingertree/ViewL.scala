@@ -8,10 +8,6 @@ trait ViewL[S[_], A] {
   def tail: S[A] = tailOption.getOrElse(sys.error("Tail on empty view"))
 }
 
-trait ViewR[S[_], A] {
-  def fold[B](b: => B, f: (=> S[A], => A) => B): B
-  def lastOption: Option[A] = fold(None, (sa, a) => Some(a))
-  def initOption: Option[S[A]] = fold(None, (sa, a) => Some(sa))
-  def last: A = lastOption.getOrElse(sys.error("Last on empty view"))
-  def init: S[A] = initOption.getOrElse(sys.error("Init on empty view"))
+case object EmptyL extends ViewL[Nothing, Nothing] {
+  override def fold[B](b: => B, f: (=> Nothing, => Nothing) => B): B = b
 }
