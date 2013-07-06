@@ -24,7 +24,7 @@ trait FingerTree[+A] {
   def +:[B >: A](x: B): FingerTree[B] = this match {
     case Empty                      => Single(x)
     case Single(v)                  => Deep(D1(x)   , Empty           , D1(v) )
-    case Deep(D4(a, b, c, d), m, r) => Deep(D2(a, b), N3(c, d, x) +: m, r     )
+    case Deep(D4(a, b, c, d), m, r) => Deep(D2(x, a), N3(b, c, d) +: m, r     )
     case Deep(l             , m, r) => Deep(x +: l  , m               , r     )
   }
 
