@@ -51,6 +51,8 @@ case class N2[A](a: A, b: A       ) extends Node[A]
 case class N3[A](a: A, b: A, c: A ) extends Node[A]
 
 object Data {
+  import Syntax._
+  import Implicits._
   val x: FingerTree[Char] = Deep(D2('t', 'h'), Empty, D3('r', 'e', 'e'))
   val y: FingerTree[Char] = {
       Deep(
@@ -61,4 +63,5 @@ object Data {
               D2(N3('n', 'o', 't'), N2('a', 't'))),
           D3('r', 'e', 'e'))
   }
+  println(y.toList)
 }
