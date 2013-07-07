@@ -7,4 +7,6 @@ trait ReduceOps[F[_], A] extends Ops[F[A]] {
   
   // Note: Renamed from toList to asList to avoid conflict with built-in Scala toList method
   def asList: List[A] = F.reduceR[A, List[A]](_::_)(Nil)(self)
+  
+  def toTree(s: F[A]): FingerTree[A] = F.reduceR[A, FingerTree[A]](_+:_)(Empty)(self)
 }
