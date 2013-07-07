@@ -11,3 +11,9 @@ trait ViewL[S[_], A] {
 case object EmptyL extends ViewL[Nothing, Nothing] {
   override def fold[B](b: => B, f: (=> Nothing, => Nothing) => B): B = b
 }
+
+object OnL {
+  def apply[S[_], A](a: => A, sa: => S[A]): ViewL[S, A] = new ViewL[S, A] {
+    override def fold[B](b: => B, f: (=> A, => S[A]) => B) = f(a, sa)
+  }
+}
