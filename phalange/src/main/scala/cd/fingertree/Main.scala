@@ -19,6 +19,5 @@ object Main {
     println(y)
     println(z)
     println(('t'::'h'::'i'::'s'::'i'::'s'::'n'::'o'::'t'::'a'::'t'::'r'::'e'::'e'::Nil).toTree)
-    println(y.asList)
   }
 }

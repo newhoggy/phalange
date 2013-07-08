@@ -29,24 +29,4 @@ object Implicits {
       case D4(a, b, c, d) => !!!
     }
   }
-
-  implicit object ReduceNode extends Reduce[Node] {
-    import Syntax._
-    override def reduceR[A, B](f: (A, => B) => B)(z: => B)(fa: Node[A]): B = {
-      implicit val BConsable = Consable(f)
-      fa match {
-        case N2(a, b      ) => a +: b +:      z
-        case N3(a, b, c   ) => a +: b +: c +: z
-      }
-    }
-    override def reduceL[A, B](f: (B,    A) => B)(z:    B)(fa: Node[A]): B = {
-      implicit val BSconable = new Sconable[B, A] {
-        override def scon(sa: B, a: A): B = f(sa, a)
-      }
-      fa match {
-        case N2(a, b      ) => z :+ a :+ b
-        case N3(a, b, c   ) => z :+ a :+ b :+ c
-      }
-    }
-  }
 }
