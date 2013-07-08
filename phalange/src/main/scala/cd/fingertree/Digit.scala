@@ -41,7 +41,6 @@ trait Digit[+A] {
     case D3(a, b, c)    => D2(a, b)
     case D4(a, b, c, d) => D3(a, b, c)
   }
-  def toTree: FingerTree[A] = ???
 }
 
 case object D0 extends Digit[Nothing]
