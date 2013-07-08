@@ -7,10 +7,12 @@ object Implicits {
   }
   
   implicit object ReduceFingerTree extends Reduce[FingerTree] {
-    override def reduceR[A, B](f: (A, => B) => B)(fa: FingerTree[A])(z: => B): B = fa match {
-      case Empty => z
-      case Single(a) => f(a, z)
-      case Deep(l, m, r) => ???
+    override def reduceR[A, B](f: (A, => B) => B)(fa: FingerTree[A])(z: => B): B = {
+      fa match {
+        case Empty => z
+        case Single(a) => f(a, z)
+        case Deep(l, m, r) => ???
+      }
     }
     override def reduceL[A, B](f: (B,    A) => B)(z:    B)(fa: FingerTree[A]): B = ???
   }
