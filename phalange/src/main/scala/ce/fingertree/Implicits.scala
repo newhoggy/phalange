@@ -10,7 +10,7 @@ object Implicits {
     import Syntax._
     override def reduceR[A, B](f: (A, => B) => B)(fa: FingerTree[A])(z: => B): B = {
       implicit val DConsable = Consable(Function.uncurried(ReduceDigit.reduceR(f)))
-      def mapDN(df: Digit[A] => ((=> B) => B)): Node[A] => ((=> B) => B) = df compose ((n: Node[A]) => n.toDigit)
+      def mapDN[C](df: Digit[A] => C): Node[A] => C = df compose ((n: Node[A]) => n.toDigit)
       implicit val DDConsable: Consable[FingerTree[Node[A]], B] =
         Consable(Function.uncurried(ReduceFingerTree.reduceR(Function.uncurried(mapDN(ReduceDigit.reduceR(f))))))
       fa match {
