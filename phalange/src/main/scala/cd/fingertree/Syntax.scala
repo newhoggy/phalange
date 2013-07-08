@@ -1,3 +1,3 @@
 package cd.fingertree
 
-object Syntax extends ToReduceOps
+object Syntax extends ToReduceOps with ToConsableOps with ToSconableOps
