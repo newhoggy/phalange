@@ -1,4 +1,4 @@
-package cd.fingertree
+package fingertree
 
 trait FingerTree[+A] {
   def +:[B >: A](x: B): FingerTree[B] = this match {

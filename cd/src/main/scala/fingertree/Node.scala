@@ -1,4 +1,4 @@
-package cd.fingertree
+package fingertree
 
 trait Node[+A]
 

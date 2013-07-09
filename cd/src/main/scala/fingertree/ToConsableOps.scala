@@ -1,4 +1,4 @@
-package cd.fingertree
+package fingertree
 
 trait ToConsableOps {
   implicit def ToConsableOps[A, S](v: S)(implicit F0: Consable[A, S]) = new ConsableOps[A, S] {
