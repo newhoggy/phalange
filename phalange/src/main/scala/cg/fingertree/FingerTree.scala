@@ -37,11 +37,34 @@ case class Deep[A](l: Digit[A], m: FingerTree[Node[A]], r: Digit[A]) extends Fin
 object FingerTree {
   import Implicits._
   import Syntax._
+
   def deepL[A](l: Digit[A], m: FingerTree[Node[A]], r: Digit[A]): FingerTree[A] = l match {
     case D0 => m.viewL match {
       case EmptyL => r.toTree
       case ConsL(ma, mm) => Deep(ma.toDigit, mm, r) 
     }
     case _ => Deep(l, m, r)
+  }
+  
+  def append3[A](l: FingerTree[A], m: List[A], r: FingerTree[A]): FingerTree[A] = {
+    import Implicits._
+    import Syntax._
+    implicit val DConsable: Consable[List[A], FingerTree[A]] = Consable(Function.uncurried(ReduceList.reduceR(Function.uncurried((a => b => a +: b ): A => (=> FingerTree[A]) => FingerTree[A]))))
+    implicit val DSconable: Sconable[FingerTree[A], List[A]] = Sconable(Function.uncurried(ReduceList.reduceL(Function.uncurried((a => b => a :+ b ): FingerTree[A] => A => FingerTree[A]))))
+    (l, m, r) match {
+      case (Empty, mm, rr)                          => mm ++: rr
+      case (ll, mm, Empty)                          => ll :++ mm
+      case (Single(x), mm, rr)                      => x  +: mm ++: rr
+      case (ll, mm, Single(x))                      => ll :++ mm :+ x
+      case (Deep(ll, lm, lr), mm, Deep(rl, rm, rr)) => Deep(ll, append3(lm, nodes(lr.asList ::: mm ::: rl.asList), rm), rr)
+      case _                                        => !!!
+    }
+  }
+  
+  def nodes[A](as: List[A]): List[Node[A]] = as match {
+    case a::b       ::Nil => N2(a, b   )::Nil
+    case a::b::c    ::Nil => N3(a, b, c)::Nil
+    case a::b::c::d ::Nil => N2(a, b   )::N2(c, d)::Nil
+    case a::b::c    ::xs  => N3(a, b, c)::nodes(xs)
   }
 }
