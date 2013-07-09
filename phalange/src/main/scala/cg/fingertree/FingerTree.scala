@@ -15,6 +15,8 @@ trait FingerTree[+A] {
     case Deep(l, m, r             ) => Deep(l     , m               , r :+ x  )
   }
   
+  def ++[B >: A](that: FingerTree[B]): FingerTree[B] = FingerTree.append3(this, Nil, that)
+  
   def viewL: ViewL[FingerTree, A] = this match {
     case Empty => EmptyL
     case Single(x) => ConsL(x, Empty)
