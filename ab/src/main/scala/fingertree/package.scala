@@ -1,8 +1,6 @@
-package ab
-
 import scalaz.Monoid
 
-package object list {
+package object fingertree {
   def !!!(): Nothing = throw new UnsupportedOperationException
   
   implicit def LListMonoid[F]: Monoid[LList[F]] = new Monoid[LList[F]] {

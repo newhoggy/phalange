@@ -1,6 +1,7 @@
-package ab.list
+package fingertree
 
 import scala.annotation.tailrec
+import scalaz.Scalaz.ToSemigroupOps
 
 trait LList[+A] {
   def head: A
