@@ -1,3 +1,3 @@
-package cc.fingertree
+package fingertree
 
 object Syntax extends ToReduceOps

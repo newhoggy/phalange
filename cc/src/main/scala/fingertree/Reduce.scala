@@ -1,4 +1,4 @@
-package cc.fingertree
+package fingertree
 
 trait Reduce[F[_]]  { self =>
   def reduceR[A, B](f: (A, => B) => B)(fa: F[A])( z: => B): B
