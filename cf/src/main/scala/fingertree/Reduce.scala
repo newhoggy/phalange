@@ -10,10 +10,3 @@ trait Reduce[F[_]]  { self =>
   def reduce2R[A, B](f: (A   , => F[A]) => F[A]): F[F[A]] => (=> F[A]) => F[A] = reduceRc((fa, fb) => reduceRc(f)(fa)(fb))
   def reduce2L[A, B](f: (F[A],      A ) => F[A]):   F[A]  =>   F[F[A]] => F[A] = reduceLc((fa, fb) => reduceLc(f)(fa)(fb))
 }
-
-object Moo {
-  def f(a: Int)(b: Int)(c:Int): Int = a + b + c
-  val x = f(1)(2)(3)
-  val y = f(_)
-  val z = y(2)(3)(4)
-}
