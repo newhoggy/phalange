@@ -1,4 +1,4 @@
-package cg.fingertree
+package fingertree
 
 trait Digit[+A] {
   def +:[B >: A](x: B): Digit[B] = this match {

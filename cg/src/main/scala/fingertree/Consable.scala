@@ -1,4 +1,4 @@
-package cg.fingertree
+package fingertree
 
 trait Consable[A, S] { self =>
   def cons(a: A, sa: S): S
