@@ -1,4 +1,4 @@
-package cf.fingertree
+package fingertree
 
 trait ViewR[+S[+_], +A] {
   def headOption: Option[A] = this match {
