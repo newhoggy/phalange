@@ -20,6 +20,12 @@ trait FingerTree[+A] {
     case Single(x) => ConsL(x, Empty)
     case Deep(l, m, r) => ConsL(l.headL, FingerTree.deepL(l.tailL, m, r))
   }
+  
+  def viewR: ViewR[FingerTree, A] = this match {
+    case Empty => EmptyR
+    case Single(x) => ConsR(Empty, x)
+    case Deep(l, m, r) => ConsR(FingerTree.deepL(l, m, r.tailR), r.headR)
+  }
 }
 
 case object Empty extends FingerTree[Nothing]

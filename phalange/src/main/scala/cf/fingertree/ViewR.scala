@@ -1,13 +1,21 @@
 package cf.fingertree
 
-trait ViewR[S[_], A] {
-//  def fold[B](b: => B, f: (=> S[A], => A) => B): B
-//  def lastOption: Option[A] = fold(None, (sa, a) => Some(a))
-//  def initOption: Option[S[A]] = fold(None, (sa, a) => Some(sa))
-//  def last: A = lastOption.getOrElse(sys.error("Last on empty view"))
-//  def init: S[A] = initOption.getOrElse(sys.error("Init on empty view"))
+trait ViewR[+S[+_], +A] {
+  def headOption: Option[A] = this match {
+    case EmptyR => None
+    case ConsR(sa, a) => Some(a)
+  }
+
+  def tailOption: Option[S[A]] = this match {
+    case EmptyR => None
+    case ConsR(sa, a) => Some(sa)
+  }
+
+  def headr: A = headOption.getOrElse(sys.error("Head on empty view"))
+
+  def tailr: S[A] = tailOption.getOrElse(sys.error("Tail on empty view"))
 }
 
 case object EmptyR extends ViewR[Nothing, Nothing]
 
-case class ConsR[S[_], A](a: A, sa: S[A])
+case class ConsR[S[+_], +A](sa: S[A], a: A) extends ViewR[S, A]
