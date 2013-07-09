@@ -1,4 +1,4 @@
-package ca.fingertree
+package fingertree
 
 trait Node[+A]
 

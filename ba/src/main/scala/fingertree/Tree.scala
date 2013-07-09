@@ -1,4 +1,4 @@
-package ba.tree
+package fingertree
 
 trait Tree[+A]
 case object Z extends Tree[Nothing]

@@ -1,4 +1,4 @@
-package cb.fingertree
+package fingertree
 
 trait Node[+A]
 

@@ -1,4 +1,4 @@
-package ca.fingertree
+package fingertree
 
 object Main {
   def main(args: Array[String]): Unit = {
