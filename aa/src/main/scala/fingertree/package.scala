@@ -1,5 +1,3 @@
-package aa
-
-package object list {
+package object fingertree {
   def !!!(): Nothing = throw new UnsupportedOperationException 
 }

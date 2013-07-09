@@ -1,4 +1,4 @@
-package aa.list
+package fingertree
 
 trait LList[+A] {
   def head: A
@@ -16,6 +16,6 @@ case class Cons[A](head: A, tail: LList[A]) extends LList[A]
 object Example {
   def main(args: Array[String]): Unit = {
     val empty: LList[Int] = Nil
-    val single: LList[Int] = 1 +: Nil
+    val single: LList[Int] = 1 +: 1 +: Nil
   }
 }
