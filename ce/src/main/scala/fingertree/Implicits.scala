@@ -1,4 +1,4 @@
-package ce.fingertree
+package fingertree
 
 object Implicits {
   implicit object ReduceList extends Reduce[List] {

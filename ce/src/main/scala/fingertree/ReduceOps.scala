@@ -1,4 +1,4 @@
-package ce.fingertree
+package fingertree
 
 import scalaz.syntax.Ops
 

@@ -1,4 +1,4 @@
-package ce.fingertree
+package fingertree
 
 trait Node[+A] {
   def toDigit: Digit[A] = this match {
