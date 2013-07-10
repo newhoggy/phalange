@@ -55,9 +55,6 @@ object FingerTree {
   }
   
   def append3[V, A](l: FingerTree[V, A], m: List[A], r: FingerTree[V, A])(implicit M: Measured[V, A]): FingerTree[V, A] = {
-    implicit val XXX = ReduceDigit[V]
-    val xxx = XXX.reduce2R[A, Digit[V, A]]((a, b) => b)
-
     import Implicits._
     import Syntax._
     implicit val DConsable: Consable[List[A], FingerTree[V, A]] = Consable(Function.uncurried(ReduceList.reduceR(Function.uncurried((a => b => a +: b ): A => (=> FingerTree[V, A]) => FingerTree[V, A]))))
