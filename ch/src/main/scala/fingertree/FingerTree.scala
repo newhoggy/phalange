@@ -46,14 +46,12 @@ object FingerTree {
   import Implicits._
   import Syntax._
 
-  def deepL[V, A](l: Digit[V, A], m: FingerTree[V, Node[V, A]], r: Digit[V, A])(implicit M: Measured[V, Node[V, A]]): FingerTree[V, A] = {
+  def deepL[V, A](l: Digit[V, A], m: FingerTree[V, Node[V, A]], r: Digit[V, A])(implicit M: Measured[V, A]): FingerTree[V, A] = {
     l match {
       case D0() => {
         val vl: ViewL[({type X[A] = FingerTree[V, A]})#X, Node[V, A]] = m.viewL
         m.viewL match {
-          case EmptyL => ???
-//            implicit def XXX(implicit xxx: Reduce[({type X[+A]=Digit[V, A]})#X]): Reduce[({type X[+A]=Digit[V, A]})#X] = xxx
-//            ToReduceOps[({type X[+A]=Digit[V, A]})#X, A](r)(XXX).toTree
+          case EmptyL => ToReduceOps[({type X[A] = Digit[V, A]})#X, A](r).toTree
           case consL => Deep(consL.head.toDigit, consL.tail, r)
         }
       }
@@ -66,13 +64,12 @@ object FingerTree {
     import Syntax._
     implicit val DConsable: Consable[List[A], FingerTree[V, A]] = Consable(Function.uncurried(ReduceList.reduceR(Function.uncurried((a => b => a +: b ): A => (=> FingerTree[V, A]) => FingerTree[V, A]))))
     implicit val DSconable: Sconable[FingerTree[V, A], List[A]] = Sconable(Function.uncurried(ReduceList.reduceL(Function.uncurried((a => b => a :+ b ): FingerTree[V, A] => A => FingerTree[V, A]))))
-//    implicit def XXX(implicit xxx: Reduce[({type X[+A]=Digit[V, A]})#X]): Reduce[({type X[+A]=Digit[V, A]})#X] = xxx
     (l, m, r) match {
       case (Empty(), mm, rr)                        => mm ++: rr
       case (ll, mm, Empty())                        => ll :++ mm
       case (Single(v, x), mm, rr)                   => x  +: mm ++: rr
       case (ll, mm, Single(v, x))                   => ll :++ mm :+ x
-      case (Deep(ll, lm, lr), mm, Deep(rl, rm, rr)) => ???//Deep(ll, append3(lm, nodes(ToReduceOps(lr)(ReduceDigit[V]).asList ::: mm ::: ToReduceOps(rl)(XXX).asList), rm), rr)
+      case (Deep(ll, lm, lr), mm, Deep(rl, rm, rr)) => ??? //Deep(ll, append3(lm, nodes(ToReduceOps(lr)(ReduceDigit[V]).asList ::: mm ::: ToReduceOps(rl)(XXX).asList), rm), rr)
       case _                                        => !!!
     }
   }
