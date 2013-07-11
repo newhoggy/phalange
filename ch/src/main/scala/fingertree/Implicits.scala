@@ -1,5 +1,7 @@
 package fingertree
 
+import scalaz.Monoid
+
 object Implicits {
   implicit object ReduceList extends Reduce[List] {
     override def reduceR[A, B](f: (A, => B) => B)(fa: List[A])(z: => B): B = fa.foldRight(z)(f(_, _))
@@ -62,6 +64,27 @@ object Implicits {
         case N2(v, a, b      ) => z :+ a :+ b
         case N3(v, a, b, c   ) => z :+ a :+ b :+ c
       }
+    }
+  }
+
+  implicit def MN[V, A](implicit M: Measured[V, A]): Measured[V, Node[V, A]] = new Measured[V, Node[V, A]] {
+    override implicit def monoid: Monoid[V] = M.monoid
+
+    override def measure(n: Node[V, A]): V = n match {
+      case N2(v, _, _) => v
+      case N3(v, _, _, _) => v
+    }
+  }
+  
+  implicit def MD[V, A](implicit M: Measured[V, A]): Measured[V, Digit[V, A]] = new Measured[V, Digit[V, A]] {
+    override implicit def monoid: Monoid[V] = M.monoid
+
+    override def measure(n: Digit[V, A]): V = n match {
+      case D0()               => M.monoid.zero
+      case D1(v, _)           => v
+      case D2(v, _, _)        => v
+      case D3(v, _, _, _)     => v
+      case D4(v, _, _, _, _)  => v
     }
   }
 }

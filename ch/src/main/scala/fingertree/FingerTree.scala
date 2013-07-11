@@ -3,7 +3,7 @@ package fingertree
 import scalaz.Monoid
 
 trait FingerTree[V, +A] {
-  import FingerTree.MN
+  import Implicits.MN
   
   def +:[B >: A](x: B)(implicit M: Measured[V, B]): FingerTree[V, B] = {
     (this: FingerTree[V, B]) match {
@@ -82,26 +82,5 @@ object FingerTree {
     case a::b::c    ::Nil => N3(a, b, c)::Nil
     case a::b::c::d ::Nil => N2(a, b   )::N2(c, d)::Nil
     case a::b::c    ::xs  => N3(a, b, c)::nodes(xs)
-  }
-
-  implicit def MN[V, A](implicit M: Measured[V, A]): Measured[V, Node[V, A]] = new Measured[V, Node[V, A]] {
-    override implicit def monoid: Monoid[V] = M.monoid
-
-    override def measure(n: Node[V, A]): V = n match {
-      case N2(v, _, _) => v
-      case N3(v, _, _, _) => v
-    }
-  }
-  
-  implicit def MD[V, A](implicit M: Measured[V, A]): Measured[V, Digit[V, A]] = new Measured[V, Digit[V, A]] {
-    override implicit def monoid: Monoid[V] = M.monoid
-
-    override def measure(n: Digit[V, A]): V = n match {
-      case D0()               => M.monoid.zero
-      case D1(v, _)           => v
-      case D2(v, _, _)        => v
-      case D3(v, _, _, _)     => v
-      case D4(v, _, _, _, _)  => v
-    }
   }
 }
