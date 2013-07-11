@@ -4,6 +4,10 @@ import scalaz.Scalaz, Scalaz._
 import scalaz.Monoid
 
 trait FingerTree[V, +A] {
+  type FX[A] = FingerTree[V, A]
+  type DX[A] = Digit[V, A]
+  
+  import Syntax._
   import Implicits._
   
   def +:[B >: A](x: B)(implicit M: Measured[V, B]): FingerTree[V, B] = {
@@ -34,6 +38,36 @@ trait FingerTree[V, +A] {
     case Empty()          => EmptyR
     case Single(v, x)     => ConsR[({type X[+A]=FingerTree[V, A]})#X, A](Empty(), x)
     case Deep(_, l, m, r) => ConsR[({type X[+A]=FingerTree[V, A]})#X, A](FingerTree.deepL(l, m, r.tailR), r.headR)
+  }
+
+  def split(p: V => Boolean)(i: V)(implicit M: Measured[V, A]): Split[({type X[+A]=FingerTree[V, A]})#X, A] = {
+    implicit def MonoidV = M.monoid
+    type X[+A]=FingerTree[V, A]
+    def ma(a: Digit[V, A]): V = ToMeasuredOps(a).measure
+    def mt(a: FingerTree[V, Node[V, A]]): V = ToMeasuredOps(a).measure
+    this match {
+      case Empty()                                    => !!!
+      case Single(_, a)                               => Split[X, A](Empty(), a, Empty())
+      case Deep(_, l, m, r) => {
+        lazy val vl = i  |+| ma(l)
+        lazy val vm = vl |+| ma(r)
+        Unit match {
+          case _ if p(vl) => (l.split(p)(i): Split[DX, A]) match {
+            case Split(sl, sx, sr) => Split[X, A](sl.toTree, sx, FingerTree.deepL(sr, m, r))
+          }
+          case _ if p(vm) => ???
+        }
+      }
+//      case D2(_, a, b)        =>  if (p(M.measure(a       ))) Split(Empty(), a, Empty())
+//                                  else                        Split(Empty(), b, Empty())
+//      case D3(_, a, b, c)     =>  if (p(M.measure(a       ))) Split(Empty(), a, Empty())
+//                                  if (p(M.measure(a, b    ))) Split(Empty(), b, Empty())
+//                                  else                        Split(Empty(), c, Empty())
+//      case D4(_, a, b, c, d)  =>  if (p(M.measure(a       ))) Split(Empty(), a, Empty())
+//                                  if (p(M.measure(a, b    ))) Split(Empty(), b, Empty())
+//                                  if (p(M.measure(a, b, c ))) Split(Empty(), c, Empty())
+//                                  else                        Split(Empty(), d, Empty())
+    }
   }
 }
 
