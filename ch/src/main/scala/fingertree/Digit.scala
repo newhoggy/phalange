@@ -44,14 +44,14 @@ trait Digit[V, +A] {
   def split(p: V => Boolean)(index: V)(implicit M: Measured[V, A]): Split[List, A] = this match {
     case D0()               => !!!
     case D1(_, a)           =>                              Split(Nil, a, Nil)
-    case D2(_, a, b)        =>  if (p(M.measure(a   )))     Split(Nil, a, Nil)
+    case D2(_, a, b)        =>  if (p(M.measure(a       ))) Split(Nil, a, Nil)
                                 else                        Split(Nil, b, Nil)
-    case D3(_, a, b, c)     =>  if (p(M.measure(a   )))     Split(Nil, a, Nil)
-                                if (p(M.measure(a, b)))     Split(Nil, b, Nil)
+    case D3(_, a, b, c)     =>  if (p(M.measure(a       ))) Split(Nil, a, Nil)
+                                if (p(M.measure(a, b    ))) Split(Nil, b, Nil)
                                 else                        Split(Nil, c, Nil)
-    case D4(_, a, b, c, d)  =>  if (p(M.measure(a)))        Split(Nil, a, Nil)
-                                if (p(M.measure(a, b)))     Split(Nil, b, Nil)
-                                if (p(M.measure(a, b, c)))  Split(Nil, c, Nil)
+    case D4(_, a, b, c, d)  =>  if (p(M.measure(a       ))) Split(Nil, a, Nil)
+                                if (p(M.measure(a, b    ))) Split(Nil, b, Nil)
+                                if (p(M.measure(a, b, c ))) Split(Nil, c, Nil)
                                 else                        Split(Nil, d, Nil)
   }
 }
