@@ -14,7 +14,7 @@ object Implicits {
       implicit val DConsable: Consable[Digit[V, A], B]                = Consable(Function.uncurried(ReduceDigit.reduceR(f)))
       implicit val FConsable: Consable[FingerTree[V, Node[V, A]], B]  = Consable(Function.uncurried(ReduceFingerTree[V].reduceR(Function.uncurried(mapDN(ReduceDigit.reduceR(f))))))
       fa match {
-        case Empty => z
+        case Empty() => z
         case Single(v, a) => f(a, z)
         case Deep(l, m: FingerTree[V, Node[V, A]], r) => l +: m +: r +: z
       }
@@ -23,7 +23,7 @@ object Implicits {
       implicit val DSconable: Sconable[B, Digit[V, A]]                = Sconable(Function.uncurried(ReduceDigit.reduceL(f)))
       implicit val FSconable: Sconable[B, FingerTree[V, Node[V, A]]]  = Sconable(Function.uncurried(ReduceFingerTree.reduceL(Function.uncurried(mapDN2(ReduceDigit.reduceL(f))))))
       fa match {
-        case Empty => z
+        case Empty() => z
         case Single(v, a) => f(z, a)
         case Deep(l, m: FingerTree[V, Node[V, A]], r) => z :+ l :+ m :+ r
       }

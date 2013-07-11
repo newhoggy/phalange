@@ -3,8 +3,8 @@ package fingertree
 import scalaz.Monoid
 import scalaz.Scalaz._
 
-trait Measured[V, A] extends Monoid[V] { self =>
-  implicit def me = self
+trait Measured[V, -A] { self =>
+  implicit def monoid: Monoid[V]
   
   def measure(a: A): V
   
