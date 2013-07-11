@@ -32,6 +32,6 @@ object Main {
     println(z)
     println(('t'::'h'::'i'::'s'::'i'::'s'::'n'::'o'::'t'::'a'::'t'::'r'::'e'::'e'::Nil).toTree)
     println(ToReduceOps[({type X[+A]=FingerTree[Int, A]})#X, Char](y).asList)
-    println(ToMeasuredOps[Int, FingerTree[Int, Char]](y)(MeasuredFingerTree[Int, Char]).measure)
+    println(ToMeasuredOps(y).measure)
   }
 }
