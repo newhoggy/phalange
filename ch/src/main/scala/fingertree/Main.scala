@@ -1,6 +1,7 @@
 package fingertree
 
 import scalaz.Monoid
+import scalaz._, Scalaz._
 
 object Main {
   def main(args: Array[String]): Unit = {
