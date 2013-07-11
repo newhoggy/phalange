@@ -1,6 +1,7 @@
 package fingertree
 
 import scalaz.Monoid
+import scalaz._, Scalaz._
 
 object Implicits {
   implicit object ReduceList extends Reduce[List] {
@@ -85,6 +86,18 @@ object Implicits {
       case D2(v, _, _)        => v
       case D3(v, _, _, _)     => v
       case D4(v, _, _, _, _)  => v
+    }
+  }
+  
+  implicit def MeasuredFingerTree[V, A](implicit MD: Measured[V, A]): Measured[V, FingerTree[V, A]] = new Measured[V, FingerTree[V, A]] {
+    import Syntax._
+
+    override implicit def monoid: Monoid[V] = MD.monoid
+
+    override def measure(tree: FingerTree[V, A]): V = tree match {
+      case Empty() => monoid.zero
+      case Single(v, x) => v
+      case Deep(l, m, r) => ToMeasuredOps(l).measure |+| ToMeasuredOps(m).measure |+| ToMeasuredOps(r).measure
     }
   }
 }
