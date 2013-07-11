@@ -1,6 +1,7 @@
 package fingertree
 
 trait Digit[V, +A] {
+  type DX[+A] = Digit[V, A]
   def +:[W >: V, B >: A](x: B)(implicit M: Measured[W, B]): Digit[W, B] = this match {
     case D1(v, a         ) => D2(x, a      )
     case D2(v, a, b      ) => D3(x, a, b   )
@@ -41,18 +42,20 @@ trait Digit[V, +A] {
     case D3(v, a, b, c)    => D2(a, b)
     case D4(v, a, b, c, d) => D3(a, b, c)
   }
-  def split(p: V => Boolean)(index: V)(implicit M: Measured[V, A]): Split[List, A] = this match {
-    case D0()                                           => !!!
-    case D1(_, a)                                       => Split(List(        ), a, List(       ))
-    case D2(_, a, b)        if (p(M.measure(a       ))) => Split(List(        ), a, List(b      ))
-    case D2(_, a, b)                                    => Split(List(a       ), b, List(       ))
-    case D3(_, a, b, c)     if (p(M.measure(a       ))) => Split(List(        ), a, List(b, c   ))
-    case D3(_, a, b, c)     if (p(M.measure(a, b    ))) => Split(List(a       ), b, List(c      ))
-    case D3(_, a, b, c)                                 => Split(List(a, b    ), c, List(       ))
-    case D4(_, a, b, c, d)  if (p(M.measure(a       ))) => Split(List(        ), a, List(b, c, d))
-    case D4(_, a, b, c, d)  if (p(M.measure(a, b    ))) => Split(List(a       ), b, List(c, d   ))
-    case D4(_, a, b, c, d)  if (p(M.measure(a, b, c ))) => Split(List(a, b    ), c, List(d      ))
-    case D4(_, a, b, c, d)                              => Split(List(a, b, c ), d, List(       ))
+  def split(p: V => Boolean)(index: V)(implicit M: Measured[V, A]): Split[DX, A] = {
+    this match {
+      case D0()                                           => !!!
+      case D1(_, a)                                       => Split[DX, A](D0(        ), a, D0(       ))
+      case D2(_, a, b)        if (p(M.measure(a       ))) => Split[DX, A](D0(        ), a, D1(b      ))
+      case D2(_, a, b)                                    => Split[DX, A](D1(a       ), b, D0(       ))
+      case D3(_, a, b, c)     if (p(M.measure(a       ))) => Split[DX, A](D0(        ), a, D2(b, c   ))
+      case D3(_, a, b, c)     if (p(M.measure(a, b    ))) => Split[DX, A](D1(a       ), b, D1(c      ))
+      case D3(_, a, b, c)                                 => Split[DX, A](D2(a, b    ), c, D0(       ))
+      case D4(_, a, b, c, d)  if (p(M.measure(a       ))) => Split[DX, A](D0(        ), a, D3(b, c, d))
+      case D4(_, a, b, c, d)  if (p(M.measure(a, b    ))) => Split[DX, A](D1(a       ), b, D2(c, d   ))
+      case D4(_, a, b, c, d)  if (p(M.measure(a, b, c ))) => Split[DX, A](D2(a, b    ), c, D1(d      ))
+      case D4(_, a, b, c, d)                              => Split[DX, A](D3(a, b, c ), d, D0(       ))
+    }
   }
 }
 
