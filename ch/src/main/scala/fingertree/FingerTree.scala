@@ -69,7 +69,7 @@ object FingerTree {
       case (ll, mm, Empty())                        => ll :++ mm
       case (Single(v, x), mm, rr)                   => x  +: mm ++: rr
       case (ll, mm, Single(v, x))                   => ll :++ mm :+ x
-      case (Deep(ll, lm, lr), mm, Deep(rl, rm, rr)) => ??? //Deep(ll, append3(lm, nodes(ToReduceOps(lr)(ReduceDigit[V]).asList ::: mm ::: ToReduceOps(rl)(XXX).asList), rm), rr)
+      case (Deep(ll, lm, lr), mm, Deep(rl, rm, rr)) => Deep(ll, append3(lm, nodes(ToReduceOps[({type X[A] = Digit[V, A]})#X, A](lr).asList ::: mm ::: ToReduceOps[({type X[A] = Digit[V, A]})#X, A](rl).asList), rm), rr)
       case _                                        => !!!
     }
   }
