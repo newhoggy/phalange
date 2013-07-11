@@ -6,6 +6,7 @@ import scalaz.Monoid
 trait FingerTree[V, +A] {
   type FV[+A] = FingerTree[V, A]
   type DV[+A] = Digit[V, A]
+  type NV[+A] = Node[V, A]
   
   import Syntax._
   import Implicits._
@@ -52,7 +53,15 @@ trait FingerTree[V, +A] {
           case _ if p(vl) => (l.split(p)(i): Split[DV, A]) match {
             case Split(sl, sx, sr) => Split[FV, A](sl.toTree, sx, FingerTree.deepL(sr, m, r))
           }
-          case _ if p(vm) => ???
+          case _ if p(vm) => (m.split(p)(vl): Split[FV, Node[V, A]]) match {
+            case Split(ml, mm, mr) => {
+              val vml = ToMeasuredOps(ml).measure
+              (mm.toDigit.split(p)(vl |+| vml): Split[DV, A]) match {
+                case Split(mml, mmx, mmr) => Split[FV, A](FingerTree.deepR(l, ml, mml), mmx, FingerTree.deepL(mmr, mr, r))
+              }
+              
+            }
+          }
         }
       }
 //      case D2(_, a, b)        =>  if (p(M.measure(a       ))) Split(Empty(), a, Empty())
@@ -102,6 +111,8 @@ object FingerTree {
       case _ => Deep(l, m, r)
     }
   }
+  
+  def deepR[V, A](l: Digit[V, A], m: FingerTree[V, Node[V, A]], r: Digit[V, A])(implicit M: Measured[V, A]): FingerTree[V, A] = ???
   
   def append3[V, A](l: FingerTree[V, A], m: List[A], r: FingerTree[V, A])(implicit M: Measured[V, A]): FingerTree[V, A] = {
     import Implicits._
