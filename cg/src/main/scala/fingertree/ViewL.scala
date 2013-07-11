@@ -1,5 +1,7 @@
 package fingertree
 
+import scala.language.higherKinds
+
 trait ViewL[+S[+_], +A] {
   def headOption: Option[A] = this match {
     case EmptyL => None
