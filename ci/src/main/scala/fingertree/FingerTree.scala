@@ -42,14 +42,12 @@ trait FingerTree[V, +A] {
 
   def split(p: V => Boolean)(i: V)(implicit M: Measured[V, A]): Split[FV, A] = {
     implicit def MonoidV = M.monoid
-    def ma(a: Digit[V, A]): V = ToMeasuredOps(a).measure
-    def mt(a: FingerTree[V, Node[V, A]]): V = ToMeasuredOps(a).measure
     this match {
       case Empty()                                    => !!!
       case Single(_, a)                               => Split[FV, A](Empty(), a, Empty())
       case Deep(_, l, m, r) => {
-        lazy val vl = i  |+| ma(l)
-        lazy val vm = vl |+| ma(r)
+        lazy val vl = i  |+| ToMeasuredOps(l).measure
+        lazy val vm = vl |+| ToMeasuredOps(r).measure
         Unit match {
           case _ if p(vl) => (l.split(p)(i): Split[DV, A]) match {
             case Split(sl, sx, sr) => Split[FV, A](sl.toTree, sx, FingerTree.deepL(sr, m, r))
