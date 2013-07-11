@@ -24,16 +24,22 @@ trait FingerTree[V, +A] {
   
   def ++[W >: V, B >: A](that: FingerTree[V, B])(implicit M: Measured[V, B]): FingerTree[V, B] = FingerTree.append3[V, B](this, Nil, that)
   
-  def viewL(implicit M: Measured[V, A]): ViewL[({type X[+A]=FingerTree[V, A]})#X, A] = this match {
-    case Empty()          => EmptyL
-    case Single(v, x)     => ConsL[({type X[+A]=FingerTree[V, A]})#X, A](x, Empty())
-    case Deep(_, l, m, r) => ConsL[({type X[+A]=FingerTree[V, A]})#X, A](l.headL, FingerTree.deepL(l.tailL, m, r))
+  def viewL(implicit M: Measured[V, A]): ViewL[({type X[+A]=FingerTree[V, A]})#X, A] = {
+    type FX[+A] = FingerTree[V, A]
+    this match {
+      case Empty()          => EmptyL
+      case Single(v, x)     => ConsL[FX, A](x, Empty())
+      case Deep(_, l, m, r) => ConsL[FX, A](l.headL, FingerTree.deepL(l.tailL, m, r))
+    }
   }
   
-  def viewR(implicit M: Measured[V, A]): ViewR[({type X[+A]=FingerTree[V, A]})#X, A] = this match {
-    case Empty()          => EmptyR
-    case Single(v, x)     => ConsR[({type X[+A]=FingerTree[V, A]})#X, A](Empty(), x)
-    case Deep(_, l, m, r) => ConsR[({type X[+A]=FingerTree[V, A]})#X, A](FingerTree.deepL(l, m, r.tailR), r.headR)
+  def viewR(implicit M: Measured[V, A]): ViewR[({type X[+A]=FingerTree[V, A]})#X, A] = {
+    type FX[+A] = FingerTree[V, A]
+    this match {
+      case Empty()          => EmptyR
+      case Single(v, x)     => ConsR[FX, A](Empty(), x)
+      case Deep(_, l, m, r) => ConsR[FX, A](FingerTree.deepL(l, m, r.tailR), r.headR)
+    }
   }
 }
 
@@ -58,11 +64,13 @@ object FingerTree {
   import Syntax._
 
   def deepL[V, A](l: Digit[V, A], m: FingerTree[V, Node[V, A]], r: Digit[V, A])(implicit M: Measured[V, A]): FingerTree[V, A] = {
+    type FX[+A] = FingerTree[V, A]
+    type DX[+A] = Digit[V, A]
     l match {
       case D0() => {
-        val vl: ViewL[({type X[A] = FingerTree[V, A]})#X, Node[V, A]] = m.viewL
+        val vl: ViewL[FX, Node[V, A]] = m.viewL
         m.viewL match {
-          case EmptyL => ToReduceOps[({type X[A] = Digit[V, A]})#X, A](r).toTree
+          case EmptyL => ToReduceOps[DX, A](r).toTree
           case consL => Deep(consL.head.toDigit, consL.tail, r)
         }
       }
@@ -73,6 +81,7 @@ object FingerTree {
   def append3[V, A](l: FingerTree[V, A], m: List[A], r: FingerTree[V, A])(implicit M: Measured[V, A]): FingerTree[V, A] = {
     import Implicits._
     import Syntax._
+    type DX[+A] = Digit[V, A]
     implicit val DConsable: Consable[List[A], FingerTree[V, A]] = Consable(Function.uncurried(ReduceList.reduceR(Function.uncurried((a => b => a +: b ): A => (=> FingerTree[V, A]) => FingerTree[V, A]))))
     implicit val DSconable: Sconable[FingerTree[V, A], List[A]] = Sconable(Function.uncurried(ReduceList.reduceL(Function.uncurried((a => b => a :+ b ): FingerTree[V, A] => A => FingerTree[V, A]))))
     (l, m, r) match {
@@ -80,7 +89,7 @@ object FingerTree {
       case (ll, mm, Empty())                              => ll :++ mm
       case (Single(v, x), mm, rr)                         => x  +: mm ++: rr
       case (ll, mm, Single(v, x))                         => ll :++ mm :+ x
-      case (Deep(_, ll, lm, lr), mm, Deep(_, rl, rm, rr)) => Deep(ll, append3(lm, nodes(ToReduceOps[({type X[A] = Digit[V, A]})#X, A](lr).asList ::: mm ::: ToReduceOps[({type X[A] = Digit[V, A]})#X, A](rl).asList), rm), rr)
+      case (Deep(_, ll, lm, lr), mm, Deep(_, rl, rm, rr)) => Deep(ll, append3(lm, nodes(ToReduceOps[DX, A](lr).asList ::: mm ::: ToReduceOps[DX, A](rl).asList), rm), rr)
       case _                                              => !!!
     }
   }
