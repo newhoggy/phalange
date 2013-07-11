@@ -68,3 +68,7 @@ case class D4[V, +A](v: V, a: A, b: A, c: A, d: A ) extends Digit[V, A]
 object D4 {
   def apply[A, V](a: A, b: A, c: A, d: A)(implicit M: Measured[V, A]): D4[V, A] = D4(M.measure(a, b, c, d), a, b, c, d)
 }
+
+object Digit {
+  type α[V] = { type α[+A] = Digit[V, A] }
+}

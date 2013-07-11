@@ -4,8 +4,8 @@ import scalaz.Scalaz, Scalaz._
 import scalaz.Monoid
 
 trait FingerTree[V, +A] {
-  type FX[A] = FingerTree[V, A]
-  type DX[A] = Digit[V, A]
+  type FV[+A] = FingerTree[V, A]
+  type DV[+A] = Digit[V, A]
   
   import Syntax._
   import Implicits._
@@ -28,38 +28,31 @@ trait FingerTree[V, +A] {
   
   def ++[W >: V, B >: A](that: FingerTree[V, B])(implicit M: Measured[V, B]): FingerTree[V, B] = FingerTree.append3[V, B](this, Nil, that)
   
-  def viewL(implicit M: Measured[V, A]): ViewL[({type X[+A]=FingerTree[V, A]})#X, A] = {
-    type FX[+A] = FingerTree[V, A]
-    this match {
-      case Empty()          => EmptyL
-      case Single(v, x)     => ConsL[FX, A](x, Empty())
-      case Deep(_, l, m, r) => ConsL[FX, A](l.headL, FingerTree.deepL(l.tailL, m, r))
-    }
+  def viewL(implicit M: Measured[V, A]): ViewL[FV, A] = this match {
+    case Empty()          => EmptyL
+    case Single(v, x)     => ConsL[FV, A](x, Empty())
+    case Deep(_, l, m, r) => ConsL[FV, A](l.headL, FingerTree.deepL(l.tailL, m, r))
   }
   
-  def viewR(implicit M: Measured[V, A]): ViewR[({type X[+A]=FingerTree[V, A]})#X, A] = {
-    type FX[+A] = FingerTree[V, A]
-    this match {
-      case Empty()          => EmptyR
-      case Single(v, x)     => ConsR[FX, A](Empty(), x)
-      case Deep(_, l, m, r) => ConsR[FX, A](FingerTree.deepL(l, m, r.tailR), r.headR)
-    }
+  def viewR(implicit M: Measured[V, A]): ViewR[FV, A] = this match {
+    case Empty()          => EmptyR
+    case Single(v, x)     => ConsR[FV, A](Empty(), x)
+    case Deep(_, l, m, r) => ConsR[FV, A](FingerTree.deepL(l, m, r.tailR), r.headR)
   }
 
-  def split(p: V => Boolean)(i: V)(implicit M: Measured[V, A]): Split[({type X[+A]=FingerTree[V, A]})#X, A] = {
+  def split(p: V => Boolean)(i: V)(implicit M: Measured[V, A]): Split[FV, A] = {
     implicit def MonoidV = M.monoid
-    type FX[+A]=FingerTree[V, A]
     def ma(a: Digit[V, A]): V = ToMeasuredOps(a).measure
     def mt(a: FingerTree[V, Node[V, A]]): V = ToMeasuredOps(a).measure
     this match {
       case Empty()                                    => !!!
-      case Single(_, a)                               => Split[FX, A](Empty(), a, Empty())
+      case Single(_, a)                               => Split[FV, A](Empty(), a, Empty())
       case Deep(_, l, m, r) => {
         lazy val vl = i  |+| ma(l)
         lazy val vm = vl |+| ma(r)
         Unit match {
-          case _ if p(vl) => (l.split(p)(i): Split[DX, A]) match {
-            case Split(sl, sx, sr) => Split[FX, A](sl.toTree, sx, FingerTree.deepL(sr, m, r))
+          case _ if p(vl) => (l.split(p)(i): Split[DV, A]) match {
+            case Split(sl, sx, sr) => Split[FV, A](sl.toTree, sx, FingerTree.deepL(sr, m, r))
           }
           case _ if p(vm) => ???
         }
@@ -97,14 +90,14 @@ object FingerTree {
   import Implicits._
   import Syntax._
 
+  type α[V] = { type α[+A] = FingerTree[V, A] }
+
   def deepL[V, A](l: Digit[V, A], m: FingerTree[V, Node[V, A]], r: Digit[V, A])(implicit M: Measured[V, A]): FingerTree[V, A] = {
-    type FX[A] = FingerTree[V, A]
-    type DX[A] = Digit[V, A]
     l match {
       case D0() => {
-        val vl: ViewL[FX, Node[V, A]] = m.viewL
+        val vl: ViewL[FingerTree.α[V]#α, Node[V, A]] = m.viewL
         m.viewL match {
-          case EmptyL => ToReduceOps[DX, A](r).toTree
+          case EmptyL => ToReduceOps[Digit.α[V]#α, A](r).toTree
           case consL => Deep(consL.head.toDigit, consL.tail, r)
         }
       }

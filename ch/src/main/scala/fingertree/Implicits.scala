@@ -9,7 +9,7 @@ object Implicits {
     override def reduceL[A, B](f: (B,    A) => B)(z:    B)(fa: List[A]): B = fa.foldLeft(z)(f)
   }
   
-  implicit def ReduceFingerTree[V]: Reduce[({type X[A]=FingerTree[V, A]})#X] = new Reduce[({type X[A]=FingerTree[V, A]})#X] {
+  implicit def ReduceFingerTree[V]: Reduce[FingerTree.α[V]#α] = new Reduce[FingerTree.α[V]#α] {
     import Syntax._
     final def mapDN[A, B, C](df: Digit[V, A] => B => C): Node[V, A] => B => C = df compose ((n: Node[V, A]) => n.toDigit)
     final def mapDN2[A, B, C](df: B => Digit[V, A] => C): B => Node[V, A] => C = { b: B => df(b) compose ((n: Node[V, A]) => n.toDigit) }
@@ -33,7 +33,7 @@ object Implicits {
     }
   }
 
-  implicit def ReduceDigit[V]: Reduce[({type X[+A]=Digit[V, A]})#X] = new Reduce[({type X[A]=Digit[V, A]})#X] {
+  implicit def ReduceDigit[V]: Reduce[Digit.α[V]#α] = new Reduce[Digit.α[V]#α] {
     override def reduceR[A, B](f: (A, => B) => B)(fa: Digit[V, A])(z: => B): B = fa match {
       case D1(v, a         ) =>           f(a, z)
       case D2(v, a, b      ) =>      f(a, f(b, z))
@@ -48,7 +48,7 @@ object Implicits {
     }
   }
 
-  implicit def ReduceNode[V]: Reduce[({type X[A]=Node[V, A]})#X] = new Reduce[({type X[A]=Node[V, A]})#X] {
+  implicit def ReduceNode[V]: Reduce[Node.α[V]#α] = new Reduce[Node.α[V]#α] {
     import Syntax._
     override def reduceR[A, B](f: (A, => B) => B)(fa: Node[V, A])(z: => B): B = {
       implicit val BConsable = Consable(f)

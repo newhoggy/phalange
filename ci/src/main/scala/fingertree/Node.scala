@@ -18,3 +18,7 @@ case class N3[V, +A](v: V, a: A, b: A, c: A ) extends Node[V, A]
 object N3 {
   def apply[V, A](a: A, b: A, c: A)(implicit M: Measured[V, A]): N3[V, A] = N3(M.measure(a, b, c), a, b, c)
 }
+
+object Node {
+  type α[V] = { type α[+A] = Node[V, A] }
+}
