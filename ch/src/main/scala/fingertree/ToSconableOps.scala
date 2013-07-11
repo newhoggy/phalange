@@ -1,5 +1,7 @@
 package fingertree
 
+import scala.language.implicitConversions
+
 trait ToSconableOps {
   implicit def ToSconableOps[S, A](v: S)(implicit F0: Sconable[S, A]) = new SconableOps[S, A] {
     def self = v
