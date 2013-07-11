@@ -19,7 +19,7 @@ object Implicits {
       fa match {
         case Empty() => z
         case Single(v, a) => f(a, z)
-        case Deep(l, m: FingerTree[V, Node[V, A]], r) => l +: m +: r +: z
+        case Deep(_, l, m: FingerTree[V, Node[V, A]], r) => l +: m +: r +: z
       }
     }
     override def reduceL[A, B](f: (B,    A) => B)(z:    B)(fa: FingerTree[V, A]): B =  {
@@ -28,7 +28,7 @@ object Implicits {
       fa match {
         case Empty() => z
         case Single(v, a) => f(z, a)
-        case Deep(l, m: FingerTree[V, Node[V, A]], r) => z :+ l :+ m :+ r
+        case Deep(_, l, m: FingerTree[V, Node[V, A]], r) => z :+ l :+ m :+ r
       }
     }
   }
@@ -96,8 +96,8 @@ object Implicits {
 
     override def measure(tree: FingerTree[V, A]): V = tree match {
       case Empty() => monoid.zero
-      case Single(v, x) => v
-      case Deep(l, m, r) => ToMeasuredOps(l).measure |+| ToMeasuredOps(m).measure |+| ToMeasuredOps(r).measure
+      case Single(v, _) => v
+      case Deep(v, _, _, _) => v
     }
   }
 }
