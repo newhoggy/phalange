@@ -3,7 +3,7 @@ package fingertree
 import scalaz.Monoid
 
 trait FingerTree[V, +A] {
-  import Implicits.MeasuredNode
+  import Implicits._
   
   def +:[B >: A](x: B)(implicit M: Measured[V, B]): FingerTree[V, B] = {
     (this: FingerTree[V, B]) match {
