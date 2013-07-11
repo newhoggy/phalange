@@ -42,17 +42,17 @@ trait Digit[V, +A] {
     case D4(v, a, b, c, d) => D3(a, b, c)
   }
   def split(p: V => Boolean)(index: V)(implicit M: Measured[V, A]): Split[List, A] = this match {
-    case D0()               => !!!
-    case D1(_, a)           =>                              Split(Nil, a, Nil)
-    case D2(_, a, b)        =>  if (p(M.measure(a       ))) Split(Nil, a, Nil)
-                                else                        Split(Nil, b, Nil)
-    case D3(_, a, b, c)     =>  if (p(M.measure(a       ))) Split(Nil, a, Nil)
-                                if (p(M.measure(a, b    ))) Split(Nil, b, Nil)
-                                else                        Split(Nil, c, Nil)
-    case D4(_, a, b, c, d)  =>  if (p(M.measure(a       ))) Split(Nil, a, Nil)
-                                if (p(M.measure(a, b    ))) Split(Nil, b, Nil)
-                                if (p(M.measure(a, b, c ))) Split(Nil, c, Nil)
-                                else                        Split(Nil, d, Nil)
+    case D0()                                           => !!!
+    case D1(_, a)                                       => Split(List(        ), a, List(       ))
+    case D2(_, a, b)        if (p(M.measure(a       ))) => Split(List(        ), a, List(b      ))
+    case D2(_, a, b)                                    => Split(List(a       ), b, List(       ))
+    case D3(_, a, b, c)     if (p(M.measure(a       ))) => Split(List(        ), a, List(b, c   ))
+    case D3(_, a, b, c)     if (p(M.measure(a, b    ))) => Split(List(a       ), b, List(c      ))
+    case D3(_, a, b, c)                                 => Split(List(a, b    ), c, List(       ))
+    case D4(_, a, b, c, d)  if (p(M.measure(a       ))) => Split(List(        ), a, List(b, c, d))
+    case D4(_, a, b, c, d)  if (p(M.measure(a, b    ))) => Split(List(a       ), b, List(c, d   ))
+    case D4(_, a, b, c, d)  if (p(M.measure(a, b, c ))) => Split(List(a, b    ), c, List(d      ))
+    case D4(_, a, b, c, d)                              => Split(List(a, b, c ), d, List(       ))
   }
 }
 
