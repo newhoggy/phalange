@@ -67,7 +67,7 @@ object Implicits {
     }
   }
 
-  implicit def MN[V, A](implicit M: Measured[V, A]): Measured[V, Node[V, A]] = new Measured[V, Node[V, A]] {
+  implicit def MeasuredNode[V, A](implicit M: Measured[V, A]): Measured[V, Node[V, A]] = new Measured[V, Node[V, A]] {
     override implicit def monoid: Monoid[V] = M.monoid
 
     override def measure(n: Node[V, A]): V = n match {
@@ -76,7 +76,7 @@ object Implicits {
     }
   }
   
-  implicit def MD[V, A](implicit M: Measured[V, A]): Measured[V, Digit[V, A]] = new Measured[V, Digit[V, A]] {
+  implicit def MeasuredDigit[V, A](implicit M: Measured[V, A]): Measured[V, Digit[V, A]] = new Measured[V, Digit[V, A]] {
     override implicit def monoid: Monoid[V] = M.monoid
 
     override def measure(n: Digit[V, A]): V = n match {
