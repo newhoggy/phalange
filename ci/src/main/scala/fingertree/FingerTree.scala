@@ -66,15 +66,6 @@ trait FingerTree[V, +A] {
           }
         }
       }
-//      case D2(_, a, b)        =>  if (p(M.measure(a       ))) Split(Empty(), a, Empty())
-//                                  else                        Split(Empty(), b, Empty())
-//      case D3(_, a, b, c)     =>  if (p(M.measure(a       ))) Split(Empty(), a, Empty())
-//                                  if (p(M.measure(a, b    ))) Split(Empty(), b, Empty())
-//                                  else                        Split(Empty(), c, Empty())
-//      case D4(_, a, b, c, d)  =>  if (p(M.measure(a       ))) Split(Empty(), a, Empty())
-//                                  if (p(M.measure(a, b    ))) Split(Empty(), b, Empty())
-//                                  if (p(M.measure(a, b, c ))) Split(Empty(), c, Empty())
-//                                  else                        Split(Empty(), d, Empty())
     }
   }
 }
