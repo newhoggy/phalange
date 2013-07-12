@@ -13,9 +13,9 @@ trait ViewL[+S[+_], +A] {
     case ConsL(a, sa) => Some(sa)
   }
 
-  def head: A = headOption.getOrElse(sys.error("Head on empty view"))
+  def lHead: A = headOption.getOrElse(sys.error("Head on empty view"))
 
-  def tail: S[A] = tailOption.getOrElse(sys.error("Tail on empty view"))
+  def lTail: S[A] = tailOption.getOrElse(sys.error("Tail on empty view"))
 }
 
 case object EmptyL extends ViewL[Nothing, Nothing]

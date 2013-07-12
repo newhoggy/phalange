@@ -98,14 +98,25 @@ object FingerTree {
         val vl: ViewL[FingerTree.α[V]#α, Node[V, A]] = m.viewL
         m.viewL match {
           case EmptyL => ToReduceOps[Digit.α[V]#α, A](r).toTree
-          case consL => Deep(consL.head.toDigit, consL.tail, r)
+          case consL => Deep(consL.lHead.toDigit, consL.lTail, r)
         }
       }
       case _ => Deep(l, m, r)
     }
   }
   
-  def deepR[V, A](l: Digit[V, A], m: FingerTree[V, Node[V, A]], r: Digit[V, A])(implicit M: Measured[V, A]): FingerTree[V, A] = ???
+  def deepR[V, A](l: Digit[V, A], m: FingerTree[V, Node[V, A]], r: Digit[V, A])(implicit M: Measured[V, A]): FingerTree[V, A] = {
+    r match {
+      case D0() => {
+        val vr: ViewR[FingerTree.α[V]#α, Node[V, A]] = m.viewR
+        m.viewR match {
+          case EmptyR => ToReduceOps[Digit.α[V]#α, A](l).toTree
+          case consR => Deep(consR.rHead.toDigit, consR.rTail, l)
+        }
+      }
+      case _ => Deep(l, m, r)
+    }
+  }
   
   def append3[V, A](l: FingerTree[V, A], m: List[A], r: FingerTree[V, A])(implicit M: Measured[V, A]): FingerTree[V, A] = {
     import Implicits._
