@@ -59,8 +59,10 @@ trait FingerTree[V, +A] {
               (mm.toDigit.split(p)(vl |+| vml): Split[DV, A]) match {
                 case Split(mml, mmx, mmr) => Split[FV, A](FingerTree.deepR(l, ml, mml), mmx, FingerTree.deepL(mmr, mr, r))
               }
-              
             }
+          }
+          case _ => (r.split(p)(i): Split[DV, A]) match {
+            case Split(rl, rm, rr) => Split[FV, A](FingerTree.deepR(l, m, rl), rm, rr.toTree)
           }
         }
       }
