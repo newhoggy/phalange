@@ -25,6 +25,7 @@ object JohnsFingerTree extends Build {
     .aggregate(cg).settings(commonSettings: _*)
     .aggregate(ch).settings(commonSettings: _*)
     .aggregate(ci).settings(commonSettings: _*)
+    .aggregate(cj).settings(commonSettings: _*)
 
   lazy val phalange = Project(id = "phalange", base = file("phalange")).settings(commonSettings: _*)
 
@@ -51,5 +52,7 @@ object JohnsFingerTree extends Build {
   lazy val ch = Project(id = "ch", base = file("ch")).settings(commonSettings: _*)
 
   lazy val ci = Project(id = "ci", base = file("ci")).settings(commonSettings: _*)
+
+  lazy val cj = Project(id = "cj", base = file("cj")).settings(commonSettings: _*)
 }
 
