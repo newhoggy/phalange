@@ -1,7 +1,7 @@
 package fingertree
 
 import scalaz.Monoid
-import scalaz._, Scalaz._
+import scalaz._, Scalaz._, Tags._
 
 trait Implicits {
   implicit object ReduceList extends Reduce[List] {
@@ -102,8 +102,8 @@ trait Implicits {
   }
   
   implicit object MonoidSize extends Monoid[Int@@Size] {
-    override def zero: Int@@Size = tag[Size](0)
-    override def append(a: Int@@Size, b: => Int@@Size) = tag[Size](a + b)
+    override def zero: Int@@Size = Tag[Int, Size](0)
+    override def append(a: Int@@Size, b: => Int@@Size) = Tag[Int, Size](a + b)
   }
   
   implicit object MeasuredElemSize extends Measured[Int@@Size, Nothing@@Elem] {

@@ -1,10 +1,8 @@
+import scalaz._, Tags._
+
 package object fingertree {
   def !!!(): Nothing = throw new UnsupportedOperationException
 
-  type Tagged[U] = { type Tag = U }
-  
-  type @@[T, U] = T with Tagged[U]
-  
   def tag[U] = new Tagger[U]
    
   // Manual specialization needed here ... specializing apply above doesn't help
