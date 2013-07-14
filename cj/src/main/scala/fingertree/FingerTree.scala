@@ -77,6 +77,10 @@ trait FingerTree[V, +A] {
     }
     case _ => (this, Empty())
   }
+
+  def takeUntil(p: V => Boolean)(implicit M: Measured[V, A]): FingerTree[V, A] = split(p)._1
+
+  def dropUntil(p: V => Boolean)(implicit M: Measured[V, A]): FingerTree[V, A] = split(p)._2
 }
 
 case class Empty[V]() extends FingerTree[V, Nothing]
