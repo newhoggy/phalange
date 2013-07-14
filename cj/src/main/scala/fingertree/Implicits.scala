@@ -3,5 +3,7 @@ package fingertree
 import scalaz.Monoid
 import scalaz._, Scalaz._
 
-object Implicits extends FingerTreeImplicits {
+trait Implicits extends FingerTreeImplicits {
 }
+
+object Implicits extends Implicits
