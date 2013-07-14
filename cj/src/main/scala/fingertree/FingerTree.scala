@@ -9,7 +9,7 @@ trait FingerTree[V, +A] {
   type NV[+A] = Node[V, A]
   
   import Syntax._
-  import Implicits._
+  import FingerTreeImplicits._
   
   def +:[B >: A](x: B)(implicit M: Measured[V, B]): FingerTree[V, B] = {
     (this: FingerTree[V, B]) match {
@@ -77,7 +77,7 @@ case class Single[V, +A](v: V, a: A) extends FingerTree[V, A]
 case class Deep[V, A](v: V, l: Digit[V, A], m: FingerTree[V, Node[V, A]], r: Digit[V, A]) extends FingerTree[V, A]
 
 object Deep {
-  import Implicits._
+  import FingerTreeImplicits._
   import Syntax._
   
   def apply[V, A](l: Digit[V, A], m: FingerTree[V, Node[V, A]], r: Digit[V, A])(implicit M: Measured[V, A]): Deep[V, A] = {
@@ -87,7 +87,7 @@ object Deep {
 }
 
 object FingerTree {
-  import Implicits._
+  import FingerTreeImplicits._
   import Syntax._
 
   type α[V] = { type α[+A] = FingerTree[V, A] }
@@ -109,7 +109,7 @@ object FingerTree {
   }
   
   def append3[V, A](l: FingerTree[V, A], m: List[A], r: FingerTree[V, A])(implicit M: Measured[V, A]): FingerTree[V, A] = {
-    import Implicits._
+    import FingerTreeImplicits._
     import Syntax._
     type DX[+A] = Digit[V, A]
     implicit val DConsable: Consable[List[A], FingerTree[V, A]] = Consable(Function.uncurried(ReduceList.reduceR(Function.uncurried((a => b => a +: b ): A => (=> FingerTree[V, A]) => FingerTree[V, A]))))
