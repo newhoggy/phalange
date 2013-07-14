@@ -35,5 +35,10 @@ object Main {
     println(ToReduceOps[FingerTree.α[Int]#α, Char](y).asList)
     println(ToMeasuredOps(y).measure)
     println(y.split(_ >= 5))
+    val sentence = TreeSeq('t', 'h', 'i', 's', 'i', 's', 'n', 'o', 't', 'a', 't', 'r', 'e', 'e')
+    println(sentence)
+    for (i <- 0 until 14) {
+      println(sentence(i))
+    }
   }
 }

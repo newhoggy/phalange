@@ -1,5 +1,7 @@
 package fingertree
 
+import scalaz.Scalaz, Scalaz._
+
 trait Digit[V, +A] {
   type DV[+A] = Digit[V, A]
 
@@ -44,18 +46,19 @@ trait Digit[V, +A] {
     case D4(v, a, b, c, d) => D3(a, b, c)
   }
   def split(p: V => Boolean)(index: V)(implicit M: Measured[V, A]): Split[DV, A] = {
+    import M.monoid
     this match {
-      case D0()                                           => !!!
-      case D1(_, a)                                       => Split[DV, A](D0(        ), a, D0(       ))
-      case D2(_, a, b)        if (p(M.measure(a       ))) => Split[DV, A](D0(        ), a, D1(b      ))
-      case D2(_, a, b)                                    => Split[DV, A](D1(a       ), b, D0(       ))
-      case D3(_, a, b, c)     if (p(M.measure(a       ))) => Split[DV, A](D0(        ), a, D2(b, c   ))
-      case D3(_, a, b, c)     if (p(M.measure(a, b    ))) => Split[DV, A](D1(a       ), b, D1(c      ))
-      case D3(_, a, b, c)                                 => Split[DV, A](D2(a, b    ), c, D0(       ))
-      case D4(_, a, b, c, d)  if (p(M.measure(a       ))) => Split[DV, A](D0(        ), a, D3(b, c, d))
-      case D4(_, a, b, c, d)  if (p(M.measure(a, b    ))) => Split[DV, A](D1(a       ), b, D2(c, d   ))
-      case D4(_, a, b, c, d)  if (p(M.measure(a, b, c ))) => Split[DV, A](D2(a, b    ), c, D1(d      ))
-      case D4(_, a, b, c, d)                              => Split[DV, A](D3(a, b, c ), d, D0(       ))
+      case D0()                                                     => !!!
+      case D1(_, a)                                                 => Split[DV, A](D0(        ), a, D0(       ))
+      case D2(_, a, b)        if (p(M.measure(a       ) |+| index)) => Split[DV, A](D0(        ), a, D1(b      ))
+      case D2(_, a, b)                                              => Split[DV, A](D1(a       ), b, D0(       ))
+      case D3(_, a, b, c)     if (p(M.measure(a       ) |+| index)) => Split[DV, A](D0(        ), a, D2(b, c   ))
+      case D3(_, a, b, c)     if (p(M.measure(a, b    ) |+| index)) => Split[DV, A](D1(a       ), b, D1(c      ))
+      case D3(_, a, b, c)                                           => Split[DV, A](D2(a, b    ), c, D0(       ))
+      case D4(_, a, b, c, d)  if (p(M.measure(a       ) |+| index)) => Split[DV, A](D0(        ), a, D3(b, c, d))
+      case D4(_, a, b, c, d)  if (p(M.measure(a, b    ) |+| index)) => Split[DV, A](D1(a       ), b, D2(c, d   ))
+      case D4(_, a, b, c, d)  if (p(M.measure(a, b, c ) |+| index)) => Split[DV, A](D2(a, b    ), c, D1(d      ))
+      case D4(_, a, b, c, d)                                        => Split[DV, A](D3(a, b, c ), d, D0(       ))
     }
   }
 }
