@@ -41,7 +41,7 @@ trait FingerTree[V, +A] {
     case Deep(_, l, m, r) => ConsR[FV, A](FingerTree.deepL(l, m, r.tailR), r.headR)
   }
 
-  def split(p: V => Boolean)(i: V)(implicit M: Measured[V, A]): Split[FV, A] = {
+  def splitTree(p: V => Boolean)(i: V)(implicit M: Measured[V, A]): Split[FV, A] = {
     implicit def MonoidV = M.monoid
     this match {
       case Empty()                                    => !!!
@@ -53,7 +53,7 @@ trait FingerTree[V, +A] {
           case _ if p(vl) => (l.split(p)(i): Split[DV, A]) match {
             case Split(sl, sx, sr) => Split[FV, A](sl.toTree, sx, FingerTree.deepL(sr, m, r))
           }
-          case _ if p(vm) => (m.split(p)(vl): Split[FV, Node[V, A]]) match {
+          case _ if p(vm) => (m.splitTree(p)(vl): Split[FV, Node[V, A]]) match {
             case Split(ml, mm, mr) => {
               val vml = ToMeasuredOps(ml).measure
               (mm.toDigit.split(p)(vl |+| vml): Split[DV, A]) match {
