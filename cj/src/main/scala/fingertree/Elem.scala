@@ -1,3 +1,3 @@
 package fingertree
 
-case class Elem[A](a: A)
+case class Elem[+A](a: A)
