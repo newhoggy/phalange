@@ -11,7 +11,4 @@ package object fingertree {
   def tag[U](i : Int) : Int @@ U = i.asInstanceOf[Int @@ U]
   def tag[U](l : Long) : Long @@ U = l.asInstanceOf[Long @@ U]
   def tag[U](d : Double) : Double @@ U = d.asInstanceOf[Double @@ U]
-
-  type Size = Int @@ SizeTag
-  type Elem[A] = A @@ ElemTag
 }

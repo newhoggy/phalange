@@ -1,4 +1,4 @@
 package fingertree
 
-trait SizeTag
-trait ElemTag
+trait Size
+trait Elem
