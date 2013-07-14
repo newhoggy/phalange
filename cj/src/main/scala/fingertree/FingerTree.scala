@@ -69,6 +69,14 @@ trait FingerTree[V, +A] {
       }
     }
   }
+
+  def split(p: V => Boolean)(implicit M: Measured[V, A]): (FingerTree[V, A], FingerTree[V, A]) = this match {
+    case Empty() => (Empty(), Empty())
+    case _ if p(ToMeasuredOps(this).measure) => splitTree(p)(M.monoid.zero) match {
+      case Split(l, m, r) => (l, m +: r)
+    }
+    case _ => (this, Empty())
+  }
 }
 
 case class Empty[V]() extends FingerTree[V, Nothing]
