@@ -4,6 +4,15 @@ import scalaz.Monoid
 import scalaz._, Scalaz._
 
 object Main {
+  implicit object MeasuredSize extends Measured[Int, Char] {
+    override implicit val monoid: Monoid[Int] = new Monoid[Int] {
+      override def zero: Int = 0
+      override def append(a: Int, b: => Int): Int = a + b
+    }
+
+    override def measure(a: Char): Int = 1
+  }
+
   def main(args: Array[String]): Unit = {
     import Syntax._
     import Implicits._
