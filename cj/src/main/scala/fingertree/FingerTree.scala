@@ -5,7 +5,6 @@ import scalaz.Scalaz, Scalaz._
 import scalaz.Monoid
 
 trait FingerTree[V, +A] {
-  type FT[V, A] <: FingerTree[V, A]
   type FV[+A] = FingerTree[V, A]
   type DV[+A] = Digit[V, A]
   type NV[+A] = Node[V, A]
