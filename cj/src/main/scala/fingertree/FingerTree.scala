@@ -1,6 +1,5 @@
 package fingertree
 
-import scala.language.higherKinds
 import scalaz.Scalaz, Scalaz._
 import scalaz.Monoid
 
@@ -57,7 +56,6 @@ trait FingerTree[V, +A] {
           case _ if p(vm) => (m.splitTree(p)(vl): Split[FV, Node[V, A]]) match {
             case Split(ml, mm, mr) => {
               val vml = ToMeasuredOps(ml).measure
-              val vv = vl |+| vml
               (mm.toDigit.split(p)(vl |+| vml): Split[DV, A]) match {
                 case Split(mml, mmm, mmr) => Split[FV, A](FingerTree.deepR(l, ml, mml), mmm, FingerTree.deepL(mmr, mr, r))
               }
