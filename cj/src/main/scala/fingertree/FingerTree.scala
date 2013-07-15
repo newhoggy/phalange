@@ -49,16 +49,16 @@ trait FingerTree[V, +A] {
       case Single(_, a)                               => Split[FV, A](Empty(), a, Empty())
       case Deep(_, l, m, r) => {
         lazy val vl = i  |+| ToMeasuredOps(l).measure
-        lazy val vm = vl |+| ToMeasuredOps(r).measure
+        lazy val vm = vl |+| ToMeasuredOps(m).measure
         Unit match {
           case _ if p(vl) => (l.split(p)(i): Split[DV, A]) match {
-            case Split(sl, sx, sr) => Split[FV, A](sl.toTree, sx, FingerTree.deepL(sr, m, r))
+            case Split(ll, lm, lr) => Split[FV, A](ll.toTree, lm, FingerTree.deepL(lr, m, r))
           }
           case _ if p(vm) => (m.splitTree(p)(vl): Split[FV, Node[V, A]]) match {
             case Split(ml, mm, mr) => {
               val vml = ToMeasuredOps(ml).measure
               (mm.toDigit.split(p)(vl |+| vml): Split[DV, A]) match {
-                case Split(mml, mmx, mmr) => Split[FV, A](FingerTree.deepR(l, ml, mml), mmx, FingerTree.deepL(mmr, mr, r))
+                case Split(mml, mmm, mmr) => Split[FV, A](FingerTree.deepR(l, ml, mml), mmm, FingerTree.deepL(mmr, mr, r))
               }
             }
           }
