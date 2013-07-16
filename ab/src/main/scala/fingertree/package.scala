@@ -3,8 +3,8 @@ import scalaz.Monoid
 package object fingertree {
   def !!!(): Nothing = throw new UnsupportedOperationException
   
-  implicit def LListMonoid[F]: Monoid[LList[F]] = new Monoid[LList[F]] {
-    override def zero: LList[F] = Nil
-    override def append(a: LList[F], b: => LList[F]): LList[F] = a.foldRight(b)(_ +: _)
+  implicit def LListMonoid[F]: Monoid[List[F]] = new Monoid[List[F]] {
+    override def zero: List[F] = Nil
+    override def append(a: List[F], b: => List[F]): List[F] = a.foldRight(b)(_ +: _)
   }
 }
