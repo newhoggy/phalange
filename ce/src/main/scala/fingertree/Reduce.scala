@@ -4,7 +4,7 @@ import scala.language.higherKinds
 
 trait Reduce[F[_]]  { self =>
   def reduceR[A, B](f: (A, => B) => B)(fa: F[A])( z: => B): B
-  def reduceL[A, B](f: (B,    A) => B)(z:    B )(fa: F[A]): B
+  def reduceL[A, B](f: (B,    A) => B)( z:   B )(fa: F[A]): B
   
   def reduceRc[A, B]: ((A, => B) => B) => F[A] => (=> B) => B = reduceR[A, B](_)
   def reduceLc[A, B]: ((B,    A) => B) =>   B  =>  F[A]  => B = reduceL[A, B](_)
