@@ -8,8 +8,8 @@ object Implicits {
   
   implicit object ReduceFingerTree extends Reduce[FingerTree] {
     import Syntax._
-    final def mapDN [A, B, C](df: (Digit[A], B) => C): (Node[A], B) => C = { (n: Node[A], b: B) => df(n.toDigit, b) }
-    final def mapDN2[A, B, C](df: (B, Digit[A]) => C): (B, Node[A]) => C = { (b: B, n: Node[A]) => df(b, n.toDigit) }
+    final def mapDN [A, B, C](df: (Digit[A], B) => C): (Node[A], B) => C = (n, b) => df(n.toDigit, b)
+    final def mapDN2[A, B, C](df: (B, Digit[A]) => C): (B, Node[A]) => C = (b, n) => df(b, n.toDigit)
     override def reduceR[A, B](f: (A, => B) => B)(fa: FingerTree[A], z: => B): B = {
       implicit val DConsable = Consable(ReduceDigit.reduceR(f))
       implicit val FConsable = Consable(ReduceFingerTree.reduceR(mapDN(ReduceDigit.reduceR(f))))
