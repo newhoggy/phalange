@@ -75,7 +75,7 @@ object FingerTree {
       case D0() => {
         val vl: ViewL[FV, Node[V, A]] = m.viewL
         m.viewL match {
-          case EmptyL => ToReduceOps[DV, A](r).toTree
+          case EmptyL => ToReduceOps[DV, A](r).asTree
           case consL => Deep(consL.head.toDigit, consL.tail, r)
         }
       }

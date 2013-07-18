@@ -51,7 +51,7 @@ trait FingerTree[V, +A] {
         lazy val vm = vl |+| ToMeasuredOps(m).measure
         Unit match {
           case _ if p(vl) => (l.split(p)(i): Split[DV, A]) match {
-            case Split(ll, lm, lr) => Split[FV, A](ll.toTree, lm, FingerTree.deepL(lr, m, r))
+            case Split(ll, lm, lr) => Split[FV, A](ll.asTree, lm, FingerTree.deepL(lr, m, r))
           }
           case _ if p(vm) => (m.splitTree(p)(vl): Split[FV, Node[V, A]]) match {
             case Split(ml, mm, mr) => {
@@ -62,7 +62,7 @@ trait FingerTree[V, +A] {
             }
           }
           case _ => (r.split(p)(i): Split[DV, A]) match {
-            case Split(rl, rm, rr) => Split[FV, A](FingerTree.deepR(l, m, rl), rm, rr.toTree)
+            case Split(rl, rm, rr) => Split[FV, A](FingerTree.deepR(l, m, rl), rm, rr.asTree)
           }
         }
       }
@@ -106,7 +106,7 @@ object FingerTree {
 
   def deepL[V, A](l: Digit[V, A], m: FingerTree[V, Node[V, A]], r: Digit[V, A])(implicit M: Measured[V, A]): FingerTree[V, A] = l match {
     case D0() => m.viewL match {
-      case EmptyL => ToReduceOps[Digit.α[V]#α, A](r).toTree
+      case EmptyL => ToReduceOps[Digit.α[V]#α, A](r).asTree
       case consL => Deep(consL.lHead.toDigit, consL.lTail, r)
     }
     case _ => Deep(l, m, r)
@@ -114,7 +114,7 @@ object FingerTree {
   
   def deepR[V, A](l: Digit[V, A], m: FingerTree[V, Node[V, A]], r: Digit[V, A])(implicit M: Measured[V, A]): FingerTree[V, A] = r match {
     case D0() => m.viewR match {
-      case EmptyR => ToReduceOps[Digit.α[V]#α, A](l).toTree
+      case EmptyR => ToReduceOps[Digit.α[V]#α, A](l).asTree
       case consR => Deep(consR.rHead.toDigit, consR.rTail, l)
     }
     case _ => Deep(l, m, r)

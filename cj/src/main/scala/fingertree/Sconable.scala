@@ -1,6 +1,6 @@
 package fingertree
 
-trait Sconable[S, A] { self =>
+trait Sconable[S, A] {
   def scon(sa: S, a: A): S
 }
 

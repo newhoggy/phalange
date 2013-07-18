@@ -1,6 +1,6 @@
 package fingertree
 
-trait Consable[A, S] { self =>
+trait Consable[A, S] {
   def cons(a: A, sa: S): S
 }
 

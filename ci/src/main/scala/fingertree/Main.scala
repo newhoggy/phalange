@@ -31,7 +31,7 @@ object Main {
     val z: FingerTree[Int, Char] = 't' +: 'h' +: 'i' +: 's' +: 'i' +: 's' +: 'n' +: 'o' +: 't' +: 'a' +: 't' +: 'r' +: 'e' +: 'e' +: Empty()
     println(y)
     println(z)
-    println(('t'::'h'::'i'::'s'::'i'::'s'::'n'::'o'::'t'::'a'::'t'::'r'::'e'::'e'::Nil).toTree)
+    println(('t'::'h'::'i'::'s'::'i'::'s'::'n'::'o'::'t'::'a'::'t'::'r'::'e'::'e'::Nil).asTree)
     println(ToReduceOps[FingerTree.α[Int]#α, Char](y).asList)
     println(ToMeasuredOps(y).measure)
     println(y.split(_ >= 5))

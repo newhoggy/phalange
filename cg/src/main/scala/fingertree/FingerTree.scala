@@ -42,7 +42,7 @@ object FingerTree {
 
   def deepL[A](l: Digit[A], m: FingerTree[Node[A]], r: Digit[A]): FingerTree[A] = l match {
     case D0 => m.viewL match {
-      case EmptyL => r.toTree
+      case EmptyL => r.asTree
       case ConsL(ma, mm) => Deep(ma.toDigit, mm, r) 
     }
     case _ => Deep(l, m, r)
