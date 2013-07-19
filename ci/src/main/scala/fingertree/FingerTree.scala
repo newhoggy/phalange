@@ -124,8 +124,8 @@ object FingerTree {
     import Implicits._
     import Syntax._
     type DV[+A] = Digit[V, A]
-    implicit val DConsable: Consable[List[A], FingerTree[V, A]] = Consable(ReduceList.reduceR((_ +: _): (A, => FingerTree[V, A]) => FingerTree[V, A]))
-    implicit val DSconable: Sconable[FingerTree[V, A], List[A]] = Sconable(ReduceList.reduceL((_ :+ _): (FingerTree[V, A],   A ) => FingerTree[V, A]))
+    implicit val DConsable: Consable[List[A], FingerTree[V, A]] = Consable(ReduceList.reduceR(_ +: _))
+    implicit val DSconable: Sconable[FingerTree[V, A], List[A]] = Sconable(ReduceList.reduceL(_ :+ _))
     (l, m, r) match {
       case (Empty(), mm, rr)                              => mm ++: rr
       case (ll, mm, Empty())                              => ll :++ mm
