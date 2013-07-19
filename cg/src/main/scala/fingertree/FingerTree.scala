@@ -51,8 +51,8 @@ object FingerTree {
   def append3[A](l: FingerTree[A], m: List[A], r: FingerTree[A]): FingerTree[A] = {
     import Implicits._
     import Syntax._
-    implicit val DConsable: Consable[List[A], FingerTree[A]] = Consable(ReduceList.reduceR(((a, b) => a +: b): (A, => FingerTree[A]) => FingerTree[A]))
-    implicit val DSconable: Sconable[FingerTree[A], List[A]] = Sconable(ReduceList.reduceL(((a, b) => a :+ b): (FingerTree[A],   A ) => FingerTree[A]))
+    implicit val DConsable: Consable[List[A], FingerTree[A]] = Consable(ReduceList.reduceR((_ +: _): (A, => FingerTree[A]) => FingerTree[A]))
+    implicit val DSconable: Sconable[FingerTree[A], List[A]] = Sconable(ReduceList.reduceL((_ :+ _): (FingerTree[A],   A ) => FingerTree[A]))
     (l, m, r) match {
       case (Empty, mm, rr)                          => mm ++: rr
       case (ll, mm, Empty)                          => ll :++ mm

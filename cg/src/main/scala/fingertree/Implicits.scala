@@ -8,11 +8,9 @@ object Implicits {
   
   implicit object ReduceFingerTree extends Reduce[FingerTree] {
     import Syntax._
-    final def mapDN [A, B, C](df: (Digit[A], B) => C): (Node[A], B) => C = (n, b) => df(n.toDigit, b)
-    final def mapDN2[A, B, C](df: (B, Digit[A]) => C): (B, Node[A]) => C = (b, n) => df(b, n.toDigit)
     override def reduceR[A, B](f: (A, => B) => B)(fa: FingerTree[A], z: => B): B = {
       implicit val DConsable = Consable(ReduceDigit.reduceR(f))
-      implicit val FConsable = Consable(ReduceFingerTree.reduceR(mapDN(ReduceDigit.reduceR(f))))
+      implicit val FConsable = Consable(ReduceFingerTree.reduceR(ReduceNode.reduceR(f)))
       fa match {
         case Empty => z
         case Single(a) => f(a, z)
@@ -21,7 +19,7 @@ object Implicits {
     }
     override def reduceL[A, B](f: (B,    A) => B)(z:    B, fa: FingerTree[A]): B =  {
       implicit val DSconable = Sconable(ReduceDigit.reduceL(f))
-      implicit val FSconable = Sconable(ReduceFingerTree.reduceL(mapDN2(ReduceDigit.reduceL(f))))
+      implicit val FSconable = Sconable(ReduceFingerTree.reduceL(ReduceNode.reduceL(f)))
       fa match {
         case Empty => z
         case Single(a) => f(z, a)
