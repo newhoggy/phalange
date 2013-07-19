@@ -11,20 +11,18 @@ trait FingerTree[V, +A] {
   import Syntax._
   import Implicits._
   
-  def +:[B >: A](x: B)(implicit M: Measured[V, B]): FingerTree[V, B] = {
-    (this: FingerTree[V, B]) match {
-      case Empty()                          => Single(M.measure(x), x)
-      case Single(v, y)                     => Deep(D1(x)   , Empty()                                       , D1(v, y)  )
-      case Deep(_, D4(_, a, b, c, d), m, r) => Deep(D2(x, a), N3(b, c, d) +: (m: FingerTree[V, Node[V, B]]) , r         )
-      case Deep(_, l             , m, r)    => Deep(x +: l  , m                                             , r         )
-    }
+  def +:[B >: A](x: B)(implicit M: Measured[V, B]): FingerTree[V, B] = (this: FingerTree[V, B]) match {
+    case Empty()                          => Single(M.measure(x), x)
+    case Single(v, y)                     => Deep(D1(x   ), Empty()         , D1(y))
+    case Deep(_, D4(_, a, b, c, d), m, r) => Deep(D2(x, a), N3(b, c, d) +: m, r    )
+    case Deep(_, l                , m, r) => Deep(x +: l  , m               , r    )
   }
 
   def :+[B >: A](x: B)(implicit M: Measured[V, B]): FingerTree[V, B] = (this: FingerTree[V, B]) match {
     case Empty()                          => Single(M.measure(x), x)
-    case Single(_, x)                     => Deep(D1(x) , Empty()                                       , D1(x)   )
-    case Deep(_, l, m, D4(v, a, b, c, d)) => Deep(l     , (m: FingerTree[V, Node[V, B]]) :+ N3(a, b, c) , D2(d, x))
-    case Deep(_, l, m, r             )    => Deep(l     , m                                             , r :+ x  )
+    case Single(_, x)                     => Deep(D1(x), Empty()         , D1(x   ))
+    case Deep(_, l, m, D4(v, a, b, c, d)) => Deep(l    , m :+ N3(a, b, c), D2(d, x))
+    case Deep(_, l, m, r             )    => Deep(l    , m               , r :+ x  )
   }
   
   def ++[W >: V, B >: A](that: FingerTree[V, B])(implicit M: Measured[V, B]): FingerTree[V, B] = FingerTree.append3[V, B](this, Nil, that)
