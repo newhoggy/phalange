@@ -18,8 +18,8 @@ object Implicits {
       }
     }
     override def reduceL[A, B](f: (B,    A) => B)(z:    B, fa: FingerTree[A]): B =  {
-      implicit val DSconable = Sconable(ReduceDigit.reduceL(f))
-      implicit val FSconable = Sconable(ReduceFingerTree.reduceL(ReduceNode.reduceL(f)))
+      implicit val DSnocable = Snocable(ReduceDigit.reduceL(f))
+      implicit val FSnocable = Snocable(ReduceFingerTree.reduceL(ReduceNode.reduceL(f)))
       fa match {
         case Empty => z
         case Single(a) => f(z, a)
@@ -53,8 +53,8 @@ object Implicits {
       }
     }
     override def reduceL[A, B](f: (B,    A) => B)(z:    B, fa: Node[A]): B = {
-      implicit val BSconable = new Sconable[B, A] {
-        override def scon(sa: B, a: A): B = f(sa, a)
+      implicit val BSnocable = new Snocable[B, A] {
+        override def snoc(sa: B, a: A): B = f(sa, a)
       }
       fa match {
         case N2(a, b      ) => z :+ a :+ b

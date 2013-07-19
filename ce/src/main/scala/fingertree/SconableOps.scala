@@ -2,8 +2,8 @@ package fingertree
 
 import scalaz.syntax.Ops
 
-trait SconableOps[S, A] extends Ops[S] {
-  implicit def F: Sconable[S, A]
+trait SnocableOps[S, A] extends Ops[S] {
+  implicit def F: Snocable[S, A]
 
-  def :+(a: A) : S = F.scon(self, a)
+  def :+(a: A) : S = F.snoc(self, a)
 }

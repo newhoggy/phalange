@@ -1,3 +1,3 @@
 package fingertree
 
-object Syntax extends ToReduceOps with ToConsableOps with ToSconableOps with ToMeasuredOps
+object Syntax extends ToReduceOps with ToConsableOps with ToSnocableOps with ToMeasuredOps

@@ -52,7 +52,7 @@ object FingerTree {
     import Implicits._
     import Syntax._
     implicit val DConsable: Consable[List[A], FingerTree[A]] = Consable(ReduceList.reduceR((_ +: _): (A, => FingerTree[A]) => FingerTree[A]))
-    implicit val DSconable: Sconable[FingerTree[A], List[A]] = Sconable(ReduceList.reduceL((_ :+ _): (FingerTree[A],   A ) => FingerTree[A]))
+    implicit val DSnocable: Snocable[FingerTree[A], List[A]] = Snocable(ReduceList.reduceL((_ :+ _): (FingerTree[A],   A ) => FingerTree[A]))
     (l, m, r) match {
       case (Empty, mm, rr)                          => mm ++: rr
       case (ll, mm, Empty)                          => ll :++ mm

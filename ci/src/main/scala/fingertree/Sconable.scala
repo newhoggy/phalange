@@ -1,11 +1,11 @@
 package fingertree
 
-trait Sconable[S, A] {
-  def scon(sa: S, a: A): S
+trait Snocable[S, A] {
+  def snoc(sa: S, a: A): S
 }
 
-object Sconable {
-  def apply[S, A](f: (S, A) => S): Sconable[S, A] = new Sconable[S, A] {
-    override def scon(sa: S, a: A): S = f(sa, a)
+object Snocable {
+  def apply[S, A](f: (S, A) => S): Snocable[S, A] = new Snocable[S, A] {
+    override def snoc(sa: S, a: A): S = f(sa, a)
   }
 }
