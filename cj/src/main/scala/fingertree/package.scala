@@ -1,7 +1,17 @@
-import scalaz._, Tags._
-
 package object fingertree {
+  import scalaz.@@
+  import scalaz.Tags._
+  import Syntax._
+
   def !!!(): Nothing = throw new UnsupportedOperationException
+
+  def asList[V, A](digit: Digit[V, A])(implicit F0: Reduce[Digit.α[V]#α]): List[A] = {
+    type FV[+A] = FingerTree[V, A]
+    type DV[+A] = Digit[V, A]
+    type NV[+A] = Node[V, A]
+
+    ToReduceOps[DV, A](digit).asList
+  }
 
   def tag[U] = new Tagger[U]
    
