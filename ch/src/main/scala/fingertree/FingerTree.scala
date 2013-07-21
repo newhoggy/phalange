@@ -88,10 +88,10 @@ object FingerTree {
     implicit val DConsable: Consable[List[A], FingerTree[V, A]] = Consable(ReduceList.reduceR(_ +: _))
     implicit val DSnocable: Snocable[FingerTree[V, A], List[A]] = Snocable(ReduceList.reduceL(_ :+ _))
     (l, m, r) match {
-      case (Empty(), mm, rr)                              => mm ++: rr
-      case (ll, mm, Empty())                              => ll :++ mm
-      case (Single(v, x), mm, rr)                         => x  +: mm ++: rr
-      case (ll, mm, Single(v, x))                         => ll :++ mm :+ x
+      case (Empty(),             mm, rr                 ) => mm ++: rr
+      case (ll,                  mm, Empty()            ) => ll :++ mm
+      case (Single(v, x),        mm, rr                 ) => x  +: mm ++: rr
+      case (ll,                  mm, Single(v, x)       ) => ll :++ mm :+ x
       case (Deep(_, ll, lm, lr), mm, Deep(_, rl, rm, rr)) => Deep(ll, append3(lm, nodes(ToReduceOps[DV, A](lr).asList ::: mm ::: ToReduceOps[DV, A](rl).asList), rm), rr)
       case _                                              => !!!
     }
