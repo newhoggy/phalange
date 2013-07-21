@@ -1,1 +1,3 @@
 package fingertree
+
+trait Elem
