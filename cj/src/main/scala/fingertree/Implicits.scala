@@ -101,15 +101,15 @@ trait Implicits {
     }
   }
   
-  implicit object MonoidSize extends Monoid[Int@@Size] {
-    override def zero: Int@@Size = Tag[Int, Size](0)
-    override def append(a: Int@@Size, b: => Int@@Size) = Tag[Int, Size](a + b)
+  implicit object MonoidSize extends Monoid[Int] {
+    override def zero: Int = 0
+    override def append(a: Int, b: => Int) = a + b
   }
   
-  implicit def MeasuredElemSize[V] = new Measured[Int@@Size, V@@Elem] {
-    override implicit def monoid: Monoid[Int@@Size] = MonoidSize
+  implicit def MeasuredElemSize[V] = new Measured[Int, V@@Elem] {
+    override implicit def monoid: Monoid[Int] = MonoidSize
 
-    override def measure(tree: V@@Elem): Int@@Size = tag[Size](1)
+    override def measure(tree: V@@Elem): Int = 1
   }
 }
 
