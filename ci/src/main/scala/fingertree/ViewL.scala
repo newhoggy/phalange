@@ -2,21 +2,7 @@ package fingertree
 
 import scala.language.higherKinds
 
-trait ViewL[+S[+_], +A] {
-  def headOption: Option[A] = this match {
-    case EmptyL => None
-    case ConsL(a, sa) => Some(a)
-  }
-
-  def tailOption: Option[S[A]] = this match {
-    case EmptyL => None
-    case ConsL(a, sa) => Some(sa)
-  }
-
-  def lHead: A = headOption.getOrElse(sys.error("Head on empty view"))
-
-  def lTail: S[A] = tailOption.getOrElse(sys.error("Tail on empty view"))
-}
+trait ViewL[+S[+_], +A]
 
 case object EmptyL extends ViewL[Nothing, Nothing]
 
