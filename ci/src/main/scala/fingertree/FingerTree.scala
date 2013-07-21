@@ -2,14 +2,13 @@ package fingertree
 
 import scalaz.Scalaz, Scalaz._
 import scalaz.Monoid
+import Implicits._
+import Syntax._
 
 trait FingerTree[V, +A] {
   type FV[+A] = FingerTree[V, A]
   type DV[+A] = Digit[V, A]
   type NV[+A] = Node[V, A]
-  
-  import Syntax._
-  import Implicits._
   
   def +:[B >: A](x: B)(implicit M: Measured[V, B]): FingerTree[V, B] = (this: FingerTree[V, B]) match {
     case Empty()                          => Single(M.measure(x), x)
