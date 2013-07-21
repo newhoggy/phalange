@@ -26,9 +26,9 @@ trait Digit[V, +A] {
   }
   def tailL(implicit M: Measured[V, A]): Digit[V, A] = this match {
     case D0()              => ???
-    case D1(v, a)          => D0()
-    case D2(v, a, b)       => D1(b)
-    case D3(v, a, b, c)    => D2(b, c)
+    case D1(v, a)          => D0(       )
+    case D2(v, a, b)       => D1(b      )
+    case D3(v, a, b, c)    => D2(b, c   )
     case D4(v, a, b, c, d) => D3(b, c, d)
   }
   def headR: A = this match {
@@ -40,9 +40,9 @@ trait Digit[V, +A] {
   }
   def tailR(implicit M: Measured[V, A]): Digit[V, A] = this match {
     case D0()              => ???
-    case D1(v, a)          => D0()
-    case D2(v, a, b)       => D1(a)
-    case D3(v, a, b, c)    => D2(a, b)
+    case D1(v, a)          => D0(       )
+    case D2(v, a, b)       => D1(a      )
+    case D3(v, a, b, c)    => D2(a, b   )
     case D4(v, a, b, c, d) => D3(a, b, c)
   }
   def split(p: V => Boolean)(index: V)(implicit M: Measured[V, A]): Split[DV, A] = {
@@ -64,26 +64,22 @@ trait Digit[V, +A] {
 }
 
 case class D0[V]() extends Digit[V, Nothing]
-
 case class D1[V, +A](v: V, a: A                   ) extends Digit[V, A]
+case class D2[V, +A](v: V, a: A, b: A             ) extends Digit[V, A]
+case class D3[V, +A](v: V, a: A, b: A, c: A       ) extends Digit[V, A]
+case class D4[V, +A](v: V, a: A, b: A, c: A, d: A ) extends Digit[V, A]
 
 object D1 {
   def apply[A, V](a: A)(implicit M: Measured[V, A]): D1[V, A] = D1(M.measure(a), a)
 }
 
-case class D2[V, +A](v: V, a: A, b: A             ) extends Digit[V, A]
-
 object D2 {
   def apply[A, V](a: A, b: A)(implicit M: Measured[V, A]): D2[V, A] = D2(M.measure(a, b), a, b)
 }
 
-case class D3[V, +A](v: V, a: A, b: A, c: A       ) extends Digit[V, A]
-
 object D3 {
   def apply[A, V](a: A, b: A, c: A)(implicit M: Measured[V, A]): D3[V, A] = D3(M.measure(a, b, c), a, b, c)
 }
-
-case class D4[V, +A](v: V, a: A, b: A, c: A, d: A ) extends Digit[V, A]
 
 object D4 {
   def apply[A, V](a: A, b: A, c: A, d: A)(implicit M: Measured[V, A]): D4[V, A] = D4(M.measure(a, b, c, d), a, b, c, d)
