@@ -48,8 +48,8 @@ object Implicits {
     override def reduceR[A, B](f: (A, B) => B)(fa: Node[A], z: B): B = {
       implicit val BConsable = Consable(f)
       fa match {
-        case N2(a, b      ) => a +: b +:      z
-        case N3(a, b, c   ) => a +: b +: c +: z
+        case N2(a, b   ) => a +: b +:      z
+        case N3(a, b, c) => a +: b +: c +: z
       }
     }
     override def reduceL[A, B](f: (B, A) => B)(z: B, fa: Node[A]): B = {
@@ -57,8 +57,8 @@ object Implicits {
         override def snoc(sa: B, a: A): B = f(sa, a)
       }
       fa match {
-        case N2(a, b      ) => z :+ a :+ b
-        case N3(a, b, c   ) => z :+ a :+ b :+ c
+        case N2(a, b   ) => z :+ a :+ b
+        case N3(a, b, c) => z :+ a :+ b :+ c
       }
     }
   }
