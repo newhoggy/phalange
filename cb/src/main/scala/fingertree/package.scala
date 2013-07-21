@@ -1,3 +1,3 @@
 package object fingertree {
-  def !!!(): Nothing = throw new UnsupportedOperationException 
+  def !!!(): Nothing = throw new UnsupportedOperationException
 }

@@ -9,7 +9,6 @@ object Implicits {
   }
   
   implicit object ReduceFingerTree extends Reduce[FingerTree] {
-    import Syntax._
     override def reduceR[A, B](f: (A, B) => B)(fa: FingerTree[A], z: B): B = {
       implicit val DConsable = Consable(ReduceDigit.reduceR(f))
       implicit val FConsable = Consable(ReduceFingerTree.reduceR(ReduceNode.reduceR(f)))

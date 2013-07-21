@@ -2,12 +2,12 @@ package fingertree
 
 import scalaz.Scalaz, Scalaz._
 import scalaz.Monoid
+import Implicits._
+import Syntax._
 
 trait FingerTree[V, +A] {
   type FV[+A] = FingerTree[V, A]
   type DV[+A] = Digit[V, A]
-  
-  import Implicits._
   
   def +:[B >: A](x: B)(implicit M: Measured[V, B]): FingerTree[V, B] = (this: FingerTree[V, B]) match {
     case Empty()                          => Single(M.measure(x), x)
@@ -51,9 +51,6 @@ case class Single[V, +A](v: V, a: A) extends FingerTree[V, A]
 case class Deep[V, A](v: V, l: Digit[V, A], m: FingerTree[V, Node[V, A]], r: Digit[V, A]) extends FingerTree[V, A]
 
 object Deep {
-  import Implicits._
-  import Syntax._
-  
   def apply[V, A](l: Digit[V, A], m: FingerTree[V, Node[V, A]], r: Digit[V, A])(implicit M: Measured[V, A]): Deep[V, A] = {
     import M.monoid
     Deep(ToMeasuredOps(l).measure |+| ToMeasuredOps(m).measure |+| ToMeasuredOps(r).measure, l, m, r)

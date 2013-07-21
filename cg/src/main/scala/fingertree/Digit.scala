@@ -23,8 +23,8 @@ trait Digit[+A] {
   def tailL: Digit[A] = this match {
     case D0             => ???
     case D1(a         ) => D0
-    case D2(a, b      ) => D1(b)
-    case D3(a, b, c   ) => D2(b, c)
+    case D2(a, b      ) => D1(b      )
+    case D3(a, b, c   ) => D2(b, c   )
     case D4(a, b, c, d) => D3(b, c, d)
   }
   def headR: A = this match {
@@ -37,8 +37,8 @@ trait Digit[+A] {
   def tailR: Digit[A] = this match {
     case D0             => ???
     case D1(a         ) => D0
-    case D2(a, b      ) => D1(a)
-    case D3(a, b, c   ) => D2(a, b)
+    case D2(a, b      ) => D1(a      )
+    case D3(a, b, c   ) => D2(a, b   )
     case D4(a, b, c, d) => D3(a, b, c)
   }
 }
