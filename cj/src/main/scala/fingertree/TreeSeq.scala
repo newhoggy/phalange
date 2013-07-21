@@ -19,5 +19,5 @@ case class TreeSeq[+A](tree: FingerTree[Int, A@@Elem]) {
 object TreeSeq {
   val empty: TreeSeq[Nothing] = new TreeSeq[Nothing](Empty())
   
-  def apply[A](values: A*): TreeSeq[A] = new TreeSeq[A](values.map(Tag[A, Elem](_)).toList.asTree[Int](MeasuredElemSize[A@@Elem]))
+  def apply[A](values: A*): TreeSeq[A] = new TreeSeq[A](values.map(tag[Elem](_)).toList.asTree[Int](MeasuredElemSize[A@@Elem]))
 }
