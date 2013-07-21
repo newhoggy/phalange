@@ -5,8 +5,8 @@ import scalaz._, Scalaz._, Tags._
 
 trait Implicits {
   implicit object ReduceList extends Reduce[List] {
-    override def reduceR[A, B](f: (A, B) => B)(fa: List[A], z:       B ): B = fa.foldRight(z)(f)
-    override def reduceL[A, B](f: (B, A) => B)(z:       B , fa: List[A]): B = fa.foldLeft (z)(f)
+    override def reduceR[A, B](f: (A, B) => B)(fa: List[A], z: B): B = fa.foldRight(z)(f)
+    override def reduceL[A, B](f: (B, A) => B)(z: B, fa: List[A]): B = fa.foldLeft (z)(f)
   }
   
   implicit def ReduceFingerTree[V]: Reduce[FingerTree.α[V]#α] = new Reduce[FingerTree.α[V]#α] {
@@ -39,7 +39,7 @@ trait Implicits {
       case D3(v, a, b, c   ) => f(a, f(b, f(c,      z)))
       case D4(v, a, b, c, d) => f(a, f(b, f(c, f(d, z))))
     }
-    override def reduceL[A, B](f: (B, A) => B)(z:    B, fa: Digit[V, A]): B = fa match {
+    override def reduceL[A, B](f: (B, A) => B)(z: B, fa: Digit[V, A]): B = fa match {
       case D0(             ) =>         z
       case D1(v, a         ) =>       f(z, a)
       case D2(v, a, b      ) =>     f(f(z, a), b)
