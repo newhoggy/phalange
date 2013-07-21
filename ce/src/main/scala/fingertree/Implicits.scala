@@ -1,5 +1,7 @@
 package fingertree
 
+import Syntax._
+
 object Implicits {
   implicit object ReduceList extends Reduce[List] {
     override def reduceR[A, B](f: (A, B) => B)(fa: List[A], z: B): B = fa.foldRight(z)(f)
@@ -17,7 +19,7 @@ object Implicits {
         case Deep(l, m, r) => l +: m +: r +: z
       }
     }
-    override def reduceL[A, B](f: (B, A) => B)(z: B, fa: FingerTree[A]): B =  {
+    override def reduceL[A, B](f: (B, A) => B)(z: B, fa: FingerTree[A]): B = {
       implicit val DSnocable = Snocable(ReduceDigit.reduceL(f))
       implicit val FSnocable = Snocable(ReduceFingerTree.reduceL(ReduceNode.reduceL(f)))
       fa match {
@@ -29,7 +31,6 @@ object Implicits {
   }
 
   implicit object ReduceDigit extends Reduce[Digit] {
-    import Syntax._
     override def reduceR[A, B](f: (A, B) => B)(fa: Digit[A], z: B): B = {
       implicit val BConsable = Consable(f)
       fa match {
@@ -56,15 +57,15 @@ object Implicits {
     override def reduceR[A, B](f: (A, B) => B)(fa: Node[A], z: B): B = {
       implicit val BConsable = Consable(f)
       fa match {
-        case N2(a, b      ) => a +: b +:      z
-        case N3(a, b, c   ) => a +: b +: c +: z
+        case N2(a, b   ) => a +: b +:      z
+        case N3(a, b, c) => a +: b +: c +: z
       }
     }
     override def reduceL[A, B](f: (B, A) => B)(z: B, fa: Node[A]): B = {
       implicit val BSnocable = Snocable(f)
       fa match {
-        case N2(a, b      ) => z :+ a :+ b
-        case N3(a, b, c   ) => z :+ a :+ b :+ c
+        case N2(a, b   ) => z :+ a :+ b
+        case N3(a, b, c) => z :+ a :+ b :+ c
       }
     }
   }

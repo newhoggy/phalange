@@ -17,7 +17,7 @@ object Implicits {
         case Deep(l, m, r) => l +: m +: r +: z
       }
     }
-    override def reduceL[A, B](f: (B, A) => B)(z: B, fa: FingerTree[A]): B =  {
+    override def reduceL[A, B](f: (B, A) => B)(z: B, fa: FingerTree[A]): B = {
       implicit val DSnocable = Snocable(ReduceDigit.reduceL(f))
       implicit val FSnocable = Snocable(ReduceFingerTree.reduceL(ReduceNode.reduceL(f)))
       fa match {

@@ -1,5 +1,7 @@
 package fingertree
 
+import Syntax._
+
 object Implicits {
   implicit object ReduceList extends Reduce[List] {
     override def reduceR[A, B](f: (A, B) => B)(fa: List[A], z: B): B = fa.foldRight(z)(f)
@@ -29,17 +31,24 @@ object Implicits {
   }
 
   implicit object ReduceDigit extends Reduce[Digit] {
-    override def reduceR[A, B](f: (A, B) => B)(fa: Digit[A], z: B): B = fa match {
-      case D1(a         ) =>           f(a, z)
-      case D2(a, b      ) =>      f(a, f(b, z))
-      case D3(a, b, c   ) => f(a, f(b, f(c, z)))
-      case D4(a, b, c, d) => !!!
+    override def reduceR[A, B](f: (A, B) => B)(fa: Digit[A], z: B): B = {
+      implicit val BConsable = Consable(f)
+      fa match {
+        case D1(a         ) =>           a +: z
+        case D2(a, b      ) =>      a +: b +: z
+        case D3(a, b, c   ) => a +: b +: c +: z
+        case D4(a, b, c, d) => !!!
+      }
     }
-    override def reduceL[A, B](f: (B, A) => B)(z: B, fa: Digit[A]): B = fa match {
-      case D1(a         ) =>     f(z, a)
-      case D2(a, b      ) =>   f(f(z, a), b)
-      case D3(a, b, c   ) => f(f(f(z, a), b), c)
-      case D4(a, b, c, d) => !!!
+    
+    override def reduceL[A, B](f: (B, A) => B)(z: B, fa: Digit[A]): B = {
+      implicit val BConsable = Snocable(f)
+      fa match {
+        case D1(a         ) => z :+ a
+        case D2(a, b      ) => z :+ a :+ b
+        case D3(a, b, c   ) => z :+ a :+ b :+ c
+        case D4(a, b, c, d) => !!!
+      }
     }
   }
 
@@ -48,17 +57,15 @@ object Implicits {
     override def reduceR[A, B](f: (A, B) => B)(fa: Node[A], z: B): B = {
       implicit val BConsable = Consable(f)
       fa match {
-        case N2(a, b    ) => a +: b +:      z
-        case N3(a, b, c ) => a +: b +: c +: z
+        case N2(a, b   ) => a +: b +:      z
+        case N3(a, b, c) => a +: b +: c +: z
       }
     }
     override def reduceL[A, B](f: (B, A) => B)(z: B, fa: Node[A]): B = {
-      implicit val BSnocable = new Snocable[B, A] {
-        override def snoc(sa: B, a: A): B = f(sa, a)
-      }
+      implicit val BSnocable = Snocable(f)
       fa match {
-        case N2(a, b    ) => z :+ a :+ b
-        case N3(a, b, c ) => z :+ a :+ b :+ c
+        case N2(a, b   ) => z :+ a :+ b
+        case N3(a, b, c) => z :+ a :+ b :+ c
       }
     }
   }
