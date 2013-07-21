@@ -25,7 +25,7 @@ trait FingerTree[V, +A] {
     case Deep(_, l, m, r                ) => Deep(l    , m               , r :+ x  )
   }
   
-  def ++[W >: V, B >: A](that: FingerTree[V, B])(implicit M: Measured[V, B]): FingerTree[V, B] = FingerTree.append3[V, B](this, Nil, that)
+  def ++[B >: A](that: FingerTree[V, B])(implicit M: Measured[V, B]): FingerTree[V, B] = FingerTree.append3[V, B](this, Nil, that)
   
   def viewL(implicit M: Measured[V, A]): ViewL[FV, A] = this match {
     case Empty()          => EmptyL

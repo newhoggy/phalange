@@ -1,13 +1,13 @@
 package fingertree
 
 trait Digit[V, +A] {
-  def +:[W >: V, B >: A](x: B)(implicit M: Measured[W, B]): Digit[W, B] = this match {
+  def +:[B >: A](x: B)(implicit M: Measured[V, B]): Digit[V, B] = this match {
     case D1(v, a         ) => D2(x, a      )
     case D2(v, a, b      ) => D3(x, a, b   )
     case D3(v, a, b, c   ) => D4(x, a, b, c)
     case D4(v, a, b, c, d) => !!!
   }
-  def :+[W >: V, B >: A](x: B)(implicit M: Measured[W, B]): Digit[W, B] = this match {
+  def :+[B >: A](x: B)(implicit M: Measured[V, B]): Digit[V, B] = this match {
     case D1(v, a         ) => D2(a,       x)
     case D2(v, a, b      ) => D3(a, b,    x)
     case D3(v, a, b, c   ) => D4(a, b, c, x)
