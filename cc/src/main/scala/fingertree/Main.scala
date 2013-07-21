@@ -14,10 +14,10 @@ object Main {
                 D2(N3('n', 'o', 't'), N2('a', 't'))),
             D3('r', 'e', 'e'))
     }
-    println(asList(List(1, 2, 3, 4)))
+    println(List(1, 2, 3, 4).asList)
     val z: FingerTree[Char] = 't' +: 'h' +: 'i' +: 's' +: 'i' +: 's' +: 'n' +: 'o' +: 't' +: 'a' +: 't' +: 'r' +: 'e' +: 'e' +: Empty
     println(y)
     println(z)
-    println(asTree('t'::'h'::'i'::'s'::'i'::'s'::'n'::'o'::'t'::'a'::'t'::'r'::'e'::'e'::Nil))
+    println(('t'::'h'::'i'::'s'::'i'::'s'::'n'::'o'::'t'::'a'::'t'::'r'::'e'::'e'::Nil).asTree)
   }
 }
