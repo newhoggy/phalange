@@ -40,5 +40,12 @@ object Main {
     for (i <- 0 until 14) {
       println(sentence(i))
     }
+    var ft: FingerTree[Int, Char] = Empty[Int]()
+
+    for (i <- 0 until 10000) {
+      ft = 'a' +: ft
+    }
+    
+    println(ft)
   }
 }
