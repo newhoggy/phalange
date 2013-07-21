@@ -3,10 +3,10 @@ package fingertree
 import scalaz.Monoid
 import scalaz._, Scalaz._
 
-object Implicits {
+trait Implicits {
   implicit object ReduceList extends Reduce[List] {
     override def reduceR[A, B](f: (A, B) => B)(fa: List[A], z: B): B = fa.foldRight(z)(f)
-    override def reduceL[A, B](f: (B, A) => B)(z: B, fa: List[A]): B = fa.foldLeft(z) (f)
+    override def reduceL[A, B](f: (B, A) => B)(z: B, fa: List[A]): B = fa.foldLeft (z)(f)
   }
   
   implicit def ReduceFingerTree[V]: Reduce[FingerTree.α[V]#α] = new Reduce[FingerTree.α[V]#α] {
@@ -33,16 +33,18 @@ object Implicits {
 
   implicit def ReduceDigit[V]: Reduce[Digit.α[V]#α] = new Reduce[Digit.α[V]#α] {
     override def reduceR[A, B](f: (A, B) => B)(fa: Digit[V, A], z: B): B = fa match {
-      case D1(v, a         ) =>           f(a, z)
-      case D2(v, a, b      ) =>      f(a, f(b, z))
-      case D3(v, a, b, c   ) => f(a, f(b, f(c, z)))
-      case D4(v, a, b, c, d) => !!!
+      case D0(             ) =>                     z
+      case D1(v, a         ) => f(a,                z)
+      case D2(v, a, b      ) => f(a, f(b,           z))
+      case D3(v, a, b, c   ) => f(a, f(b, f(c,      z)))
+      case D4(v, a, b, c, d) => f(a, f(b, f(c, f(d, z))))
     }
     override def reduceL[A, B](f: (B, A) => B)(z: B, fa: Digit[V, A]): B = fa match {
-      case D1(v, a         ) =>     f(z, a)
-      case D2(v, a, b      ) =>   f(f(z, a), b)
-      case D3(v, a, b, c   ) => f(f(f(z, a), b), c)
-      case D4(v, a, b, c, d) => !!!
+      case D0(             ) =>         z
+      case D1(v, a         ) =>       f(z, a)
+      case D2(v, a, b      ) =>     f(f(z, a), b)
+      case D3(v, a, b, c   ) =>   f(f(f(z, a), b), c)
+      case D4(v, a, b, c, d) => f(f(f(f(z, a), b), c), d)
     }
   }
 
@@ -99,3 +101,5 @@ object Implicits {
     }
   }
 }
+
+object Implicits extends Implicits

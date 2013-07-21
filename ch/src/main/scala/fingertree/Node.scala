@@ -7,8 +7,12 @@ trait Node[V, +A] {
   }
 }
 
-case class N2[V, +A](v: V, a: A, b: A       ) extends Node[V, A]
-case class N3[V, +A](v: V, a: A, b: A, c: A ) extends Node[V, A]
+case class N2[V, +A](v: V, a: A, b: A      ) extends Node[V, A]
+case class N3[V, +A](v: V, a: A, b: A, c: A) extends Node[V, A]
+
+object Node {
+  type α[V] = { type α[+A] = Node[V, A] }
+}
 
 object N2 {
   def apply[V, A](a: A, b: A)(implicit M: Measured[V, A]): N2[V, A] = N2(M.measure(a, b), a, b)
@@ -16,8 +20,4 @@ object N2 {
 
 object N3 {
   def apply[V, A](a: A, b: A, c: A)(implicit M: Measured[V, A]): N3[V, A] = N3(M.measure(a, b, c), a, b, c)
-}
-
-object Node {
-  type α[V] = { type α[+A] = Node[V, A] }
 }

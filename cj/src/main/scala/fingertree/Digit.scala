@@ -26,9 +26,9 @@ trait Digit[V, +A] {
   }
   def tailL(implicit M: Measured[V, A]): Digit[V, A] = this match {
     case D0()              => ???
-    case D1(v, a)          => D0()
-    case D2(v, a, b)       => D1(b)
-    case D3(v, a, b, c)    => D2(b, c)
+    case D1(v, a)          => D0(       )
+    case D2(v, a, b)       => D1(b      )
+    case D3(v, a, b, c)    => D2(b, c   )
     case D4(v, a, b, c, d) => D3(b, c, d)
   }
   def headR: A = this match {
@@ -40,9 +40,9 @@ trait Digit[V, +A] {
   }
   def tailR(implicit M: Measured[V, A]): Digit[V, A] = this match {
     case D0()              => ???
-    case D1(v, a)          => D0()
-    case D2(v, a, b)       => D1(a)
-    case D3(v, a, b, c)    => D2(a, b)
+    case D1(v, a)          => D0(       )
+    case D2(v, a, b)       => D1(a      )
+    case D3(v, a, b, c)    => D2(a, b   )
     case D4(v, a, b, c, d) => D3(a, b, c)
   }
   def split(p: V => Boolean)(index: V)(implicit M: Measured[V, A]): Split[DV, A] = {
@@ -64,7 +64,6 @@ trait Digit[V, +A] {
 }
 
 case class D0[V]() extends Digit[V, Nothing]
-
 case class D1[V, +A](v: V, a: A                   ) extends Digit[V, A]
 case class D2[V, +A](v: V, a: A, b: A             ) extends Digit[V, A]
 case class D3[V, +A](v: V, a: A, b: A, c: A       ) extends Digit[V, A]

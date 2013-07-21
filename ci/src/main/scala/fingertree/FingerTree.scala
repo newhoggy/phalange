@@ -129,9 +129,14 @@ object FingerTree {
       case (ll,                  mm, Empty()            ) => ll :++ mm
       case (Single(v, x),        mm, rr                 ) => x  +: mm ++: rr
       case (ll,                  mm, Single(v, x)       ) => ll :++ mm :+ x
-      case (Deep(_, ll, lm, lr), mm, Deep(_, rl, rm, rr)) => Deep(ll, append3(lm, nodes(ToReduceOps[DV, A](lr).asList ::: mm ::: ToReduceOps[DV, A](rl).asList), rm), rr)
+      case (Deep(_, ll, lm, lr), mm, Deep(_, rl, rm, rr)) => Deep(ll, append3(lm, nodes(lr, mm, rl), rm), rr)
       case _                                              => !!!
     }
+  }
+  
+  def nodes[V, A](l: Digit[V, A], m: List[A], r: Digit[V, A])(implicit M: Measured[V, A]): List[Node[V, A]] = {
+    type DV[+A] = Digit[V, A]
+    nodes(ToReduceOps[DV, A](l).asList ::: m ::: ToReduceOps[DV, A](r).asList)
   }
   
   def nodes[V, A](as: List[A])(implicit M: Measured[V, A]): List[Node[V, A]] = as match {

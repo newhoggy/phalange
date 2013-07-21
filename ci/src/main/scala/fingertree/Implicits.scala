@@ -3,10 +3,10 @@ package fingertree
 import scalaz.Monoid
 import scalaz._, Scalaz._
 
-object Implicits {
+trait Implicits {
   implicit object ReduceList extends Reduce[List] {
     override def reduceR[A, B](f: (A, B) => B)(fa: List[A], z: B): B = fa.foldRight(z)(f)
-    override def reduceL[A, B](f: (B, A) => B)(z: B, fa: List[A]): B = fa.foldLeft(z) (f)
+    override def reduceL[A, B](f: (B, A) => B)(z: B, fa: List[A]): B = fa.foldLeft (z)(f)
   }
   
   implicit def ReduceFingerTree[V]: Reduce[FingerTree.α[V]#α] = new Reduce[FingerTree.α[V]#α] {
@@ -101,3 +101,5 @@ object Implicits {
     }
   }
 }
+
+object Implicits extends Implicits

@@ -22,7 +22,7 @@ trait FingerTree[V, +A] {
     case Empty()                          => Single(M.measure(x), x)
     case Single(_, x)                     => Deep(D1(x), Empty()         , D1(x   ))
     case Deep(_, l, m, D4(v, a, b, c, d)) => Deep(l    , m :+ N3(a, b, c), D2(d, x))
-    case Deep(_, l, m, r             )    => Deep(l    , m               , r :+ x  )
+    case Deep(_, l, m, r                ) => Deep(l    , m               , r :+ x  )
   }
   
   def ++[B >: A](that: FingerTree[V, B])(implicit M: Measured[V, B]): FingerTree[V, B] = FingerTree.append3[V, B](this, Nil, that)
