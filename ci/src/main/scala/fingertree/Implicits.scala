@@ -81,11 +81,11 @@ trait Implicits {
     override implicit def monoid: Monoid[V] = M.monoid
 
     override def measure(n: Digit[V, A]): V = n match {
-      case D0()               => M.monoid.zero
-      case D1(v, _)           => v
-      case D2(v, _, _)        => v
-      case D3(v, _, _, _)     => v
-      case D4(v, _, _, _, _)  => v
+      case D0(             ) => M.monoid.zero
+      case D1(v, _         ) => v
+      case D2(v, _, _      ) => v
+      case D3(v, _, _, _   ) => v
+      case D4(v, _, _, _, _) => v
     }
   }
   
