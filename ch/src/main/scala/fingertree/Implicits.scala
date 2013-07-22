@@ -46,7 +46,7 @@ trait Implicits {
     }
     
     override def reduceL[A, B](f: (B, A) => B)(z: B, fa: Digit[V, A]): B = {
-      implicit val BConsable = Snocable(f)
+      implicit val BSnocable = Snocable(f)
       fa match {
         case D0(             ) => z
         case D1(v, a         ) => z :+ a
