@@ -6,8 +6,8 @@ case class O[A](value: A) extends Tree[A]
 case class S[A](child: Tree[Node[A]]) extends Tree[A] 
 
 trait Node[+A]
-case class N2[A](a: A, b: A       ) extends Node[A]
-case class N3[A](a: A, b: A, c: A ) extends Node[A]
+case class N2[A](a: A, b: A      ) extends Node[A]
+case class N3[A](a: A, b: A, c: A) extends Node[A]
 
 object Data {
   val empty: Tree[Int] = Z
