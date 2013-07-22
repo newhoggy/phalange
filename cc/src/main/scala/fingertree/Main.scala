@@ -1,9 +1,10 @@
 package fingertree
 
+import Syntax._
+import Implicits._
+
 object Main {
   def main(args: Array[String]): Unit = {
-    import Syntax._
-    import Implicits._
     val x: FingerTree[Char] = Deep(D2('t', 'h'), Empty, D3('r', 'e', 'e'))
     val y: FingerTree[Char] = {
         Deep(
