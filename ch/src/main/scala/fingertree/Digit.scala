@@ -14,28 +14,28 @@ trait Digit[V, +A] {
     case D4(v, a, b, c, d) => !!!
   }
   def headL: A = this match {
-    case D0(             ) => ???
+    case D0(             ) => !!!
     case D1(v, a         ) => a
     case D2(v, a, _      ) => a
     case D3(v, a, _, _   ) => a
     case D4(v, a, _, _, _) => a
   }
   def tailL(implicit M: Measured[V, A]): Digit[V, A] = this match {
-    case D0(             ) => ???
+    case D0(             ) => !!!
     case D1(v, a         ) => D0(       )
     case D2(v, a, b      ) => D1(b      )
     case D3(v, a, b, c   ) => D2(b, c   )
     case D4(v, a, b, c, d) => D3(b, c, d)
   }
   def headR: A = this match {
-    case D0(             ) => ???
+    case D0(             ) => !!!
     case D1(v, a         ) => a
     case D2(v, _, b      ) => b
     case D3(v, _, _, c   ) => c
     case D4(v, _, _, _, d) => d
   }
   def tailR(implicit M: Measured[V, A]): Digit[V, A] = this match {
-    case D0(             ) => ???
+    case D0(             ) => !!!
     case D1(v, a         ) => D0(       )
     case D2(v, a, b      ) => D1(a      )
     case D3(v, a, b, c   ) => D2(a, b   )
