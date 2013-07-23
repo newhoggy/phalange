@@ -5,7 +5,12 @@ import scalaz._, Scalaz._, Tags._
 
 trait Implicits {
   import Syntax._
-
+  
+  implicit object ReduceSeq extends Reduce[Seq] {
+    override def reduceR[A, B](f: (A, B) => B)(fa: Seq[A], z: B): B = fa.foldRight(z)(f)
+    override def reduceL[A, B](f: (B, A) => B)(z: B, fa: Seq[A]): B = fa.foldLeft (z)(f)
+  }
+  
   implicit object ReduceList extends Reduce[List] {
     override def reduceR[A, B](f: (A, B) => B)(fa: List[A], z: B): B = fa.foldRight(z)(f)
     override def reduceL[A, B](f: (B, A) => B)(z: B, fa: List[A]): B = fa.foldLeft (z)(f)
