@@ -23,7 +23,11 @@ package object fingertree {
   def tagF[U] = new TaggerF[U]
   
   // Manual specialization needed here ... specializing apply above doesn't help
-  def tag[U](i : Int): Int @@ U = i.asInstanceOf[Int @@ U]
-  def tag[U](l : Long): Long @@ U = l.asInstanceOf[Long @@ U]
-  def tag[U](d : Double): Double @@ U = d.asInstanceOf[Double @@ U]
+  def tag[U](i : Boolean): Boolean  @@ U = i.asInstanceOf[Boolean @@ U]
+  def tag[U](i : Char   ): Char     @@ U = i.asInstanceOf[Char    @@ U]
+  def tag[U](l : Byte   ): Byte     @@ U = l.asInstanceOf[Byte    @@ U]
+  def tag[U](i : Int    ): Int      @@ U = i.asInstanceOf[Int     @@ U]
+  def tag[U](l : Long   ): Long     @@ U = l.asInstanceOf[Long    @@ U]
+  def tag[U](d : Float  ): Float    @@ U = d.asInstanceOf[Float   @@ U]
+  def tag[U](d : Double ): Double   @@ U = d.asInstanceOf[Double  @@ U]
 }
