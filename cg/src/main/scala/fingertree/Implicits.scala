@@ -33,10 +33,10 @@ trait Implicits {
     override def reduceR[A, B](f: (A, B) => B)(fa: Digit[A], z: B): B = {
       implicit val BConsable = Consable(f)
       fa match {
-        case D1(a         ) =>           a +: z
-        case D2(a, b      ) =>      a +: b +: z
-        case D3(a, b, c   ) => a +: b +: c +: z
-        case D4(a, b, c, d) => !!!
+        case D1(a         ) =>                a +: z
+        case D2(a, b      ) =>           a +: b +: z
+        case D3(a, b, c   ) =>      a +: b +: c +: z
+        case D4(a, b, c, d) => a +: b +: c +: d +: z
       }
     }
     
@@ -46,7 +46,7 @@ trait Implicits {
         case D1(a         ) => z :+ a
         case D2(a, b      ) => z :+ a :+ b
         case D3(a, b, c   ) => z :+ a :+ b :+ c
-        case D4(a, b, c, d) => !!!
+        case D4(a, b, c, d) => z :+ a :+ b :+ c :+ d
       }
     }
   }
