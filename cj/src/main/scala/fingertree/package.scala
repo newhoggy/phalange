@@ -20,6 +20,8 @@ package object fingertree {
 
   def tag[U] = new Tagger[U]
   
+  def tagF[U] = new TaggerF[U]
+  
   // Manual specialization needed here ... specializing apply above doesn't help
   def tag[U](i : Int): Int @@ U = i.asInstanceOf[Int @@ U]
   def tag[U](l : Long): Long @@ U = l.asInstanceOf[Long @@ U]
