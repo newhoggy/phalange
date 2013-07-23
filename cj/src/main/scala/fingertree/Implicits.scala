@@ -114,17 +114,6 @@ trait Implicits {
       case Deep(v, _, _, _) => v
     }
   }
-  
-  implicit object MonoidSize extends Monoid[Int] {
-    override def zero: Int = 0
-    override def append(a: Int, b: => Int) = a + b
-  }
-  
-  implicit def MeasuredElemSize[V] = new Measured[Int, V@@Elem] {
-    override implicit def monoid: Monoid[Int] = MonoidSize
-
-    override def measure(tree: V@@Elem): Int = 1
-  }
 }
 
 object Implicits extends Implicits
