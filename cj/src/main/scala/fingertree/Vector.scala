@@ -29,6 +29,8 @@ case class Vector[+A](tree: FingerTree[Int, A@@Elem]) {
     case Split(_, x, _) => x
   }
   
+  def ++[B >: A](that: Vector[B]): Vector[B] = Vector(this.tree ++ that.tree)
+  
   def +:[B >: A](a: B): Vector[B] = Vector(tag[Elem](a) +: tree)
   
   def :+[B >: A](a: B): Vector[B] = Vector(tree :+ tag[Elem](a))
