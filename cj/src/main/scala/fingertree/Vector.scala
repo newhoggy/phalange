@@ -9,10 +9,10 @@ trait VectorImplicits extends Implicits {
     override def append(a: Int, b: => Int) = a + b
   }
   
-  implicit def MeasuredElemSize[V] = new Measured[Int, V@@Elem] {
+  implicit def MeasuredElemSize[A] = new Measured[Int, A@@Elem] {
     override implicit def monoid: Monoid[Int] = MonoidSize
 
-    override def measure(tree: V@@Elem): Int = 1
+    override def measure(tree: A@@Elem): Int = 1
   }
 }
 
@@ -28,6 +28,10 @@ case class Vector[+A](tree: FingerTree[Int, A@@Elem]) {
   def apply(i: Int): A = tree.splitTree(i < _)(0) match {
     case Split(_, x, _) => x
   }
+  
+  def +:[B >: A](a: B): Vector[B] = Vector(tag[Elem](a) +: tree)
+  
+  def :+[B >: A](a: B): Vector[B] = Vector(tree :+ tag[Elem](a))
 }
 
 object Vector extends VectorImplicits {
