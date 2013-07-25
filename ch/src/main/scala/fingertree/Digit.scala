@@ -1,5 +1,9 @@
 package fingertree
 
+trait Dv[V] {
+  type a[A] = Digit[V, A]
+}
+
 trait Digit[V, +A] {
   def +:[B >: A](x: B)(implicit M: Measured[V, B]): Digit[V, B] = this match {
     case D1(v, a         ) => D2(x, a      )
@@ -63,8 +67,4 @@ object D3 {
 
 object D4 {
   def apply[A, V](a: A, b: A, c: A, d: A)(implicit M: Measured[V, A]): D4[V, A] = D4(M.measure(a, b, c, d), a, b, c, d)
-}
-
-object Digit {
-  type α[V] = { type α[+A] = Digit[V, A] }
 }

@@ -38,7 +38,7 @@ trait Implicits {
     }
   }
 
-  implicit def ReduceDigit[V]: Reduce[Digit.α[V]#α] = new Reduce[Digit.α[V]#α] {
+  implicit def ReduceDigit[V]: Reduce[Dv[V]#a] = new Reduce[Dv[V]#a] {
     override def reduceR[A, B](f: (A, B) => B)(fa: Digit[V, A], z: B): B = {
       implicit val BConsable = Consable(f)
       fa match {
