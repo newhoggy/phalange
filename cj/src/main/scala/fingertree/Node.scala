@@ -1,7 +1,7 @@
 package fingertree
 
 trait Nv[V] {
-  type a[A] = Node[V, A]
+  type a[+A] = Node[V, A]
 }
 
 trait Node[V, +A] {
