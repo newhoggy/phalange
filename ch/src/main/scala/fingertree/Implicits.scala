@@ -11,7 +11,7 @@ trait Implicits {
     override def reduceL[A, B](f: (B, A) => B)(z: B, fa: List[A]): B = fa.foldLeft (z)(f)
   }
   
-  implicit def ReduceFingerTree[V]: Reduce[FingerTree.α[V]#α] = new Reduce[FingerTree.α[V]#α] {
+  implicit def ReduceFingerTree[V]: Reduce[Fv[V]#a] = new Reduce[Fv[V]#a] {
     import Syntax._
     override def reduceR[A, B](f: (A, B) => B)(fa: FingerTree[V, A], z: B): B = {
       implicit val DConsable = Consable(ReduceDigit[V].reduceR(f))
@@ -57,7 +57,7 @@ trait Implicits {
     }
   }
 
-  implicit def ReduceNode[V]: Reduce[Node.α[V]#α] = new Reduce[Node.α[V]#α] {
+  implicit def ReduceNode[V]: Reduce[Nv[V]#a] = new Reduce[Nv[V]#a] {
     import Syntax._
     override def reduceR[A, B](f: (A, B) => B)(fa: Node[V, A], z: B): B = {
       implicit val BConsable = Consable(f)

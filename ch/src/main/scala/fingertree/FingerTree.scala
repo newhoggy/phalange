@@ -5,6 +5,10 @@ import scalaz.Monoid
 import Implicits._
 import Syntax._
 
+trait Fv[V] {
+  type a[A] = FingerTree[V, A]
+}
+
 trait FingerTree[V, +A] {
   type FV[+A] = FingerTree[V, A]
   type DV[+A] = Digit[V, A]
@@ -61,8 +65,6 @@ object FingerTree {
   import Implicits._
   import Syntax._
 
-  type α[V] = { type α[+A] = FingerTree[V, A] }
-  
   def deepL[V, A](l: Digit[V, A], m: FingerTree[V, Node[V, A]], r: Digit[V, A])(implicit M: Measured[V, A]): FingerTree[V, A] = {
     type FV[+A] = FingerTree[V, A]
     type DV[+A] = Digit[V, A]
