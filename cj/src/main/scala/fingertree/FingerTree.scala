@@ -115,7 +115,7 @@ object FingerTree {
   def deepR[V, A](l: Digit[V, A], m: FingerTree[V, Node[V, A]], r: Digit[V, A])(implicit M: Measured[V, A]): FingerTree[V, A] = r match {
     case D0() => m.viewR match {
       case EmptyR => ToReduceOps[Dv[V]#a, A](l).asTree
-      case ConsR(rTail, rHead) => Deep(rHead.toDigit, rTail, l)
+      case ConsR(rTail, rHead) => Deep(l, rTail, rHead.toDigit)
     }
     case _ => Deep(l, m, r)
   }
