@@ -24,7 +24,7 @@ trait FingerTree[+A] {
   def viewR: ViewR[FingerTree, A] = this match {
     case Empty => EmptyR
     case Single(x) => ConsR(Empty, x)
-    case Deep(l, m, r) => ConsR(FingerTree.deepL(l, m, r.tailR), r.headR)
+    case Deep(l, m, r) => ConsR(FingerTree.deepR(l, m, r.tailR), r.headR)
   }
 }
 
@@ -41,6 +41,13 @@ object FingerTree {
     case D0 => m.viewL match {
       case EmptyL => r.asTree
       case ConsL(ma, mm) => Deep(ma.toDigit, mm, r) 
+    }
+    case _ => Deep(l, m, r)
+  }
+  def deepR[A](l: Digit[A], m: FingerTree[Node[A]], r: Digit[A]): FingerTree[A] = r match {
+    case D0 => m.viewR match {
+      case EmptyR => l.asTree
+      case ConsR(mm, ma) => Deep(l, mm, ma.toDigit) 
     }
     case _ => Deep(l, m, r)
   }
