@@ -1,7 +1,3 @@
-EclipseKeys.withSource := true
-
-javaHome := Some(file(System.getenv("JAVA_HOME")))
-
 resolvers += "Scala Tools Snapshots" at "http://scala-tools.org/repo-snapshots/"
 
 libraryDependencies ++= Seq(
@@ -13,8 +9,6 @@ libraryDependencies ++= Seq(
   "org.scalacheck" %% "scalacheck" % "1.10.1" % "test",
   "org.specs2" %% "specs2" % "1.14" % "test"
 )
-
-unmanagedJars in Compile += Attributed.blank(file(System.getenv("JAVA_HOME") + "/jre/lib/jfxrt.jar"))
 
 // From http://www.scala-sbt.org/release/docs/Community/Using-Sonatype.html
 // https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide
@@ -52,10 +46,3 @@ pomExtra := (
       <url>http://timesprint.com</url>
     </developer>
   </developers>)
-
-autoCompilerPlugins := true
-
-addCompilerPlugin("org.scala-lang.plugins" % "continuations" % "2.10.1")
-
-scalacOptions += "-P:continuations:enable"
-

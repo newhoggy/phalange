@@ -1,16 +1,5 @@
 scalaVersion in ThisBuild := "2.10.1"
 
-EclipseKeys.withSource := true
-
-javaHome in ThisBuild := Some(file {
-   Option(System.getenv("JAVA_HOME")).getOrElse {
-     println("Warning: JAVA_HOME not defined")
-     "."
-   }
-})
-
-unmanagedJars in Compile += Attributed.blank(file(System.getenv("JAVA_HOME") + "/jre/lib/jfxrt.jar"))
-
 publishMavenStyle := true
 
 publishTo <<= version { (v: String) =>
@@ -43,10 +32,3 @@ pomExtra := (
       <url>http://timesprint.com</url>
     </developer>
   </developers>)
-
-autoCompilerPlugins := true
-
-addCompilerPlugin("org.scala-lang.plugins" % "continuations" % "2.10.1")
-
-scalacOptions += "-P:continuations:enable"
-
